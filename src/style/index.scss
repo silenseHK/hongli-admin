@@ -1,0 +1,349 @@
+@import "./variable.scss";
+@import "./layout.scss";
+@import "./transition.scss";
+
+.el-form-item.is-success .el-input__inner,
+.el-form-item.is-success .el-input__inner:focus,
+.el-form-item.is-success .el-textarea__inner,
+.el-form-item.is-success .el-textarea__inner:focus {
+  border-color: #67c23a;
+}
+.el-form-item.is-success .el-input-group__append .el-input__inner,
+.el-form-item.is-success .el-input-group__prepend .el-input__inner {
+  border-color: transparent;
+}
+.el-form-item.is-success .el-input__validateIcon {
+  color: #67c23a;
+}
+
+.el-table td,
+.el-table th.is-leaf {
+  text-align: center !important;
+}
+
+html {
+  height: 100%;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  color: #606266;
+
+  &:hover {
+    text-decoration: none;
+    color: #409eff;
+  }
+}
+
+body {
+  height: 100%;
+  font: 12px/1.5 Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, SimSun, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  height: 100%;
+}
+
+.mtop30 {
+  margin-top: $px30;
+}
+
+.fontBold {
+  font-weight: bold;
+}
+
+.mtrt20 {
+  margin-right: $px20;
+}
+
+.wid300 {
+  width: 300px !important;
+}
+
+.btnStyle1 {
+  padding: 11px 20px !important;
+}
+
+.header i[class^="el-icon"] {
+  color: $text-color;
+}
+
+#app .clearFixed:after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.loginCon .el-input__inner {
+  // background: rgba(0, 0, 0, 0.1);
+  background: #fff;
+  height: 50px;
+  outline: none;
+  color: $text-color;
+  border: none;
+}
+
+.loginCon .el-form-item {
+  // border: 1px solid hsla(0, 0%, 100%, 0.1);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.marginLeft {
+  margin-left: 64px !important;
+}
+
+.pTitle {
+  font-size: 14px;
+  color: #666;
+  padding: 10px 0;
+
+  code {
+    background-color: #f9fafc;
+    padding: 0 4px;
+    border: 1px solid #eaeefb;
+    border-radius: 4px;
+  }
+
+  span {
+    font-size: 12px;
+  }
+
+  i {
+    margin-right: 5px;
+    color: #ffc107;
+    font-size: 18px;
+  }
+}
+
+.el-notification {
+  .el-icon-s-opportunity {
+    color: #ffc107;
+    font-size: 22px;
+    margin-top: 2px;
+  }
+}
+
+// reset
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
+html {
+  font-size: 13px;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.2em;
+  background: #f1f1f1;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: #999;
+}
+
+p {
+  line-height: 1.5em;
+}
+
+@each $colorKey, $color in $colors {
+  .text-#{$colorKey} {
+    color: $color;
+  }
+
+  .bg-#{$colorKey} {
+    background-color: $color;
+  }
+}
+
+// text align
+@each $var in (left, center, right) {
+  .text-#{$var} {
+    text-align: $var !important;
+  }
+}
+
+@each $sizeKey, $size in $font-sizes {
+  .fs-#{$sizeKey} {
+    font-size: $size * $base-font-size;
+  }
+}
+
+// text overflow
+.text-ellipsis {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// width, height
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+// flex
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+@each $key, $value in $flex-jc {
+  .jc-#{$key} {
+    justify-content: $value;
+  }
+}
+
+@each $key, $value in $flex-ai {
+  .ai-#{$key} {
+    align-items: $value;
+  }
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+// m-0, mx-0
+@each $typeKey, $type in $spacing-types {
+  // .m-1
+  @each $sizeKey, $size in $spacing-sizes {
+    .#{$typeKey}-#{$sizeKey} {
+      #{$type}: $size * $spacing-base-size;
+    }
+  }
+
+  // .mx-1 , .my-1
+  @each $sizeKey, $size in $spacing-sizes {
+    .#{$typeKey}x-#{$sizeKey} {
+      #{$type}-left: $size * $spacing-base-size;
+      #{$type}-right: $size * $spacing-base-size;
+    }
+
+    .#{$typeKey}y-#{$sizeKey} {
+      #{$type}-top: $size * $spacing-base-size;
+      #{$type}-bottom: $size * $spacing-base-size;
+    }
+  }
+
+  // .mt-1
+  @each $directionKey, $direction in $spacing-directions {
+    @each $sizeKey, $size in $spacing-sizes {
+      .#{$typeKey}#{$directionKey}-#{$sizeKey} {
+        #{$type}-#{$direction}: $size * $spacing-base-size;
+      }
+    }
+  }
+}
+
+// button
+.btn {
+  border: none;
+  border-radius: 0.1538rem;
+  font-size: map-get($font-sizes, "sm") * $base-font-size;
+  padding: 0.2rem 0.6rem;
+}
+
+// nav
+.nav {
+  display: flex;
+
+  .nav-item {
+    border-bottom: 3px solid transparent;
+    padding-bottom: 0.2rem;
+
+    &.active {
+      color: map-get($colors, "primary");
+      border-bottom-color: map-get($colors, "primary");
+    }
+  }
+
+  &.nav-inverse {
+    .nav-item {
+      color: map-get($colors, "white");
+
+      &.active {
+        border-bottom-color: map-get($colors, "white");
+      }
+    }
+  }
+}
+
+// sprite
+// page
+.pagination-bottom {
+  margin-top: 40px;
+}
