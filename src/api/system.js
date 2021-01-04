@@ -164,3 +164,13 @@ export const systemEdit = (params) => {
   const url = "/system/edit"
   return $axios.post(url, params)
 }
+
+export const serviceEdit = (params) => {
+  const url = "/system/service"
+  return $axios.post(url, params)
+}
+
+export const serviceAll = () => {
+  const url = "/system/service"
+  return $axios.get(url)
+}
