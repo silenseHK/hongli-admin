@@ -120,11 +120,17 @@ export default {
   }),
   activated() {
     this.getStytem();
-    this.getService();
   },
   methods: {
-    handleClick(e){
-      this.activeName = e.name;
+    handleClick(){
+      switch (this.activeName){
+        case 'one':
+          this.getStytem();
+          break;
+        case 'two':
+          this.getService();
+          break;
+      }
     },
     getStytem() {
       systemAll().then((res) => {
@@ -139,14 +145,10 @@ export default {
     handelEdit() {
       const {
         id,
-        whats_group_url,
-        whats_service_url,
         multiple,
       } = this.systemList;
       const params = {
         id,
-        whats_group_url,
-        whats_service_url,
         multiple
       };
       systemEdit(params).then((res) => {
@@ -188,7 +190,11 @@ export default {
 
     getService(){
       serviceAll().then((res)=>{
-        console.log(res)
+        if(res.code === 200){
+          this.service = res.data;
+        }else{
+          this.$message.error(res.msg);
+        }
       })
     },
 
