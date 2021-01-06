@@ -53,6 +53,16 @@
                 ></el-input>
               </el-form-item>
             </el-col>
+
+            <el-col :span="3">
+              <el-form-item prop="IP">
+                <el-input
+                    size="small"
+                    v-model="searchData.IP"
+                    placeholder="IP"
+                ></el-input>
+              </el-form-item>
+            </el-col>
             <!-- 1------------ -->
             <el-col :span="3">
               <el-form-item prop="customer">
@@ -265,7 +275,16 @@
             <span>{{ scope.row.last_time | formatDate }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="备注" label="备注" width="150">
+        <el-table-column prop="ip" label="IP" width="150">
+        </el-table-column>
+        <el-table-column prop="remarks" label="备注" width="150">
+        </el-table-column>
+        <el-table-column prop="is_login" label="账号在线状态" width="140">
+          <template slot-scope="scope">
+            <el-tag type="success" size="mini" effect="dark">{{
+                scope.row.online_status === 0 ? "下线" : "在线"
+              }}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column prop="is_login" label="账号登录状态" width="140">
           <template slot-scope="scope">
@@ -707,6 +726,7 @@ export default {
         transactionType: "", // j交j状态
         time: [], //时间搜索
         searchId: "", //ID搜索
+        IP: "",  //IP搜索
       },
       //会员新增
       memberData: {
@@ -921,6 +941,7 @@ export default {
         transactionType,
         time,
         searchId,
+          IP
       } = this.searchData;
       const times = time.map((item) => {
         return item / 1000;
@@ -937,6 +958,7 @@ export default {
         is_transaction: transactionType,
         reg_time: times,
         id: searchId,
+        IP: IP
       };
 
       // for (const key in conditions) {
@@ -958,6 +980,7 @@ export default {
           is_login: "=",
           is_transaction: "=",
           reg_time: "between",
+          IP: "="
         },
         page: this.currentPage,
         limit: this.pagesize,

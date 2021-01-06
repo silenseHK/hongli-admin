@@ -33,6 +33,13 @@
               placeholder="二级推荐人手机号"
             ></el-input>
           </el-form-item>
+          <el-form-item prop="IP" class="w230">
+            <el-input
+                size="small"
+                v-model="searchData.IP"
+                placeholder="IP"
+            ></el-input>
+          </el-form-item>
           <el-form-item prop="accounType" class="w230">
             <el-select
               v-model="searchData.accounType"
@@ -126,6 +133,15 @@
         <el-table-column prop="last_time" label="最后登录时间" width="200">
           <template slot-scope="scope">
             <span>{{ scope.row.last_time | formatDate }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ip" label="IP" width="150">
+        </el-table-column>
+        <el-table-column label="账号在线状态" width="140">
+          <template slot-scope="scope">
+            <el-tag type="success" size="mini" effect="dark">{{
+                scope.row.online_status === 0 ? "下线" : "在线"
+              }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="账号登录状态" width="140">
@@ -446,6 +462,7 @@ export default {
         transactionType: "", // j交j状态
         time: [], //时间搜索
         searchId: "", //id搜索
+        IP: "", //IP查询
       },
       page: 1,
       //表单验证
@@ -481,6 +498,7 @@ export default {
         transactionType: "", // j交j状态
         time: [], //时间搜索
         searchId: "", //id搜索
+        IP: "", //IP查询
       };
     },
     mySearch() {
@@ -498,6 +516,7 @@ export default {
         one_recommend_phone: searchData.firstPhone,
         two_recommend_phone: searchData.lastPhone,
         status: searchData.accounType,
+        ip: searchData.IP,
         start_time:
           searchData.time && searchData.time.length != 0
             ? searchData.time[0] / 1000

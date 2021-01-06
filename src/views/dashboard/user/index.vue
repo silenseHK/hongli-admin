@@ -228,6 +228,26 @@
             </div>
           </div>
         </el-col>
+        <el-col :span="6" style="margin-top: 20px" v-if='roleType==1'>
+          <div class="cardItem">
+            <div class="cardItem_txt">
+              <div class="count-num-box">
+                <blockquote v-if='homeList.onlineNumber !=null'>
+                  <count-to
+                      class="cardItem_p0 color-green2"
+                      :startVal="startVal"
+                      :endVal="Number(homeList.onlineNumber)"
+                      :duration="2000"
+                  ></count-to>
+                </blockquote>
+              </div>
+              <p class="cardItem_p1">在线人数</p>
+            </div>
+            <div class="cardItem_icon">
+              <i class="el-icon-user color-green2"></i>
+            </div>
+          </div>
+        </el-col>
       </div>
 
       <div class="statistics color-blue">出入金汇总</div>
@@ -680,7 +700,8 @@ export default {
       totalProfitLoss: null,
       backstageGiftMoney: null,
       upperSeparation: null,
-      downSeparation: null
+      downSeparation: null,
+      onlineNumber: null,
     },
     sourcehType: "",
     //注册来源
@@ -860,6 +881,7 @@ export default {
             backstageGiftMoney,
             upperSeparation,
             downSeparation,
+            onlineNum
           } = res.data;
           const datas = {
             members: Number(members),
@@ -888,6 +910,7 @@ export default {
             backstageGiftMoney: Number(backstageGiftMoney),
             upperSeparation: Number(upperSeparation),
             downSeparation: Number(downSeparation),
+            onlineNumber: Number(onlineNum)
           };
           this.homeList = datas;
         }
