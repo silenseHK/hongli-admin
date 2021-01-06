@@ -174,3 +174,13 @@ export const serviceAll = () => {
   const url = "/system/service"
   return $axios.get(url)
 }
+
+export const crispEdit = (params) => {
+  const url = "/system/crisp"
+  return $axios.post(url, params)
+}
+
+export const crispAll = () => {
+  const url = "/system/crisp"
+  return $axios.get(url)
+}

@@ -46,10 +46,10 @@
             <el-form-item label="按钮1图标:" style="width: 40%">
               <el-radio-group v-model="service.btn_1.icon">
                 <el-radio label="whats_app">
-                  <img style="width:40px;height:40px;" src="../../assets/service/whats_app.png" />
+                  <img style="width:40px;height:40px;background:#ddd;" src="../../assets/service/whats_app.png" />
                 </el-radio>
                 <el-radio label="group">
-                  <img style="width:40px;height:40px;" src="../../assets/service/group.png" />
+                  <img style="width:40px;height:40px;background:#ddd;" src="../../assets/service/group.png" />
                 </el-radio>
               </el-radio-group>
             </el-form-item>
@@ -73,16 +73,53 @@
             <el-form-item label="按钮2图标:" style="width: 40%">
               <el-radio-group v-model="service.btn_2.icon">
                 <el-radio label="whats_app">
-                  <img style="width:40px;height:40px;" src="../../assets/service/whats_app.png" />
+                  <img style="width:40px;height:40px;background:#ddd;" src="../../assets/service/whats_app.png" />
                 </el-radio>
                 <el-radio label="group">
-                  <img style="width:40px;height:40px;" src="../../assets/service/group.png" />
+                  <img style="width:40px;height:40px;background:#ddd;" src="../../assets/service/group.png" />
                 </el-radio>
               </el-radio-group>
             </el-form-item>
 
+            <el-form-item label="开启状态" style="width: 30%" prop="status">
+              <el-switch
+                  v-model="service.status"
+                  active-text="开启"
+                  inactive-text="关闭"
+                  active-value=1
+                  inactive-value=0>
+              </el-switch>
+            </el-form-item>
+
             <el-form-item>
               <el-button type="primary" size="small" @click="handleEditService"
+              >修改</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="第三方客服配置" name="three">
+          <el-form label-width="130px" :model="crisp" :rules="crispRules" ref="crisp">
+            <el-form-item label="CRISP_ID" style="width: 30%" prop="id">
+              <el-input
+                  v-model="crisp.id"
+                  placeholder=""
+                  size="small"
+                  clearable
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="开启状态" style="width: 30%" prop="status">
+              <el-switch
+                  v-model="crisp.status"
+                  active-text="开启"
+                  inactive-text="关闭"
+                  active-value=1
+                  inactive-value=0>
+              </el-switch>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" size="small" @click="handleEditCrisp"
               >修改</el-button
               >
             </el-form-item>
@@ -94,7 +131,7 @@
 </template>
 
 <script>
-import { systemAll, systemEdit, serviceEdit, serviceAll } from "@/api/system";
+import { systemAll, systemEdit, serviceEdit, serviceAll, crispEdit, crispAll } from "@/api/system";
 export default {
   name: "Configuration",
   data: () => ({
@@ -114,7 +151,21 @@ export default {
         link: "",
         icon: "",
         title: ""
-      }
+      },
+      status: '0'
+    },
+    crisp:{
+      id: '',
+      status: "0"
+    },
+    crispRules: {
+      id: [
+        { required: true, message: '请输入crisp_id', trigger: 'blur' },
+        { min: 1, max: 64, message: '长度在 1 到 64 个字符', trigger: 'blur' }
+      ],
+      status: [
+        { required: true, message: '请选择开启状态', trigger: 'blur' },
+      ]
     },
     activeName: 'one',
   }),
@@ -130,6 +181,8 @@ export default {
         case 'two':
           this.getService();
           break;
+        case 'three':
+          this.getCrisp();
       }
     },
     getStytem() {
@@ -154,7 +207,7 @@ export default {
       systemEdit(params).then((res) => {
         if (res.code === 200) {
           this.$message.success("修改成功");
-          this.getStytem();
+          this.handleClick();
         } else {
           this.$message.error("修改失败");
         }
@@ -162,7 +215,7 @@ export default {
     },
 
     handleEditService(){
-      let {btn_1, btn_2} = this.service
+      let {btn_1, btn_2, status} = this.service
       if(!btn_1.title || !btn_1.icon || !btn_1.link){
         this.$message({
           type: 'warning',
@@ -177,15 +230,33 @@ export default {
         })
         return false;
       }
-      const params = {btn_1, btn_2}
+      const params = {btn_1, btn_2, status}
       serviceEdit(params).then((res) => {
         if (res.code === 200) {
           this.$message.success("修改成功");
-          this.getStytem();
+          this.handleClick();
         } else {
           this.$message.error("修改失败");
         }
       });
+    },
+
+    handleEditCrisp(){
+      this.$refs['crisp'].validate((valid) => {
+        if (valid) {
+          let [crisp_website_id, status] = [this.crisp.id, this.crisp.status]
+          crispEdit({crisp_website_id, status}).then((res) => {
+            if (res.code === 200) {
+              this.$message.success("修改成功");
+              this.handleClick();
+            } else {
+              this.$message.error("修改失败");
+            }
+          });
+        }
+      });
+
+
     },
 
     getService(){
@@ -197,6 +268,19 @@ export default {
         }
       })
     },
+
+    getCrisp(){
+      crispAll().then((res)=>{
+        if(res.code === 200){
+          this.crisp = {
+            id: res.data.crisp_website_id,
+            status: res.data.status
+          }
+        }else{
+          this.$message.error(res.msg);
+        }
+      })
+    }
 
   },
 };
