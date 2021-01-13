@@ -119,4 +119,12 @@ export default {
     width: 450px;
     margin-right: 30px;
   }
+  .el-drawer__body{
+    overflow-y: auto !important;
+  }
+  /*2.隐藏滚动条，太丑了*/
+
+  .el-drawer__container ::-webkit-scrollbar{
+    display: none;
+  }
 </style>
