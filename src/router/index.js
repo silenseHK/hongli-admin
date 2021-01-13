@@ -188,6 +188,20 @@ export const asyncRoutes = [
     ],
   },
   {
+    path: "/product",
+    component: Layout,
+    name: "/product/search",
+    redirect: "/product/index",
+    children: [
+      {
+        path: "index",
+        name: "/product/search",
+        component: () => import("@/views/product"),
+        meta: { title: "商品管理", icon: "el-icon-bank-card" },
+      }
+    ],
+  },
+  {
     path: "/myPerformance",
     component: Layout,
     name: "/Performance/findAll",
