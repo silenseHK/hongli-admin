@@ -129,7 +129,20 @@ export const asyncRoutes = [
       },
     ],
   },
-
+  {
+    path: "/banner",
+    name: "/banner/index",
+    component: Layout,
+    redirect: "/banner/index",
+    children: [
+      {
+        path: "index",
+        name: "/admin/findAll",
+        component: () => import("@/views/banner/index"),
+        meta: { title: "banner管理", icon: "el-icon-user-solid" },
+      },
+    ],
+  },
   {
     path: "/roles",
     component: Layout,
