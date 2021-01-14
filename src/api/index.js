@@ -43,6 +43,7 @@ $axios.interceptors.response.use(
         return Promise.resolve(response.data)
       }else{
         Message.error(response.data.msg)
+        return Promise.resolve(response.data)
       }
     } else {
       return Promise.reject(response)

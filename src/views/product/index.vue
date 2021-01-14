@@ -29,7 +29,7 @@
 
         <el-table-column prop="sort" label="排序" width="120">
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="120">
+        <el-table-column prop="status" label="商品状态" width="120">
           <template slot-scope="scope">
             <el-tag type="success" size="small" effect="dark">{{
                 scope.row.status === 1 ? "上线" : "下线"
@@ -37,9 +37,17 @@
           </template>
         </el-table-column>
 
+        <el-table-column prop="status" label="购买状态" width="120">
+          <template slot-scope="scope">
+            <el-tag type="success" size="small" effect="dark">{{
+                scope.row.buy_status === 1 ? "可购买" : "不可购买"
+              }}</el-tag>
+          </template>
+        </el-table-column>
+
         <el-table-column prop="created_at" label="添加时间" width="200"></el-table-column>
         <el-table-column prop="updated_at" label="编辑时间" width="200"></el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column label="操作" width="200" fixed="right">
           <template slot-scope="scope">
             <el-button type="primary" plain @click="showEdit(scope)">编辑</el-button>
             <el-button type="primary" plain @click="del(scope)">删除</el-button>
@@ -117,11 +125,20 @@
             </el-image>
           </el-form-item>
 
-          <el-form-item label="商品排序[越小越靠前]" :label-width="formLabelWidth" prop="sort">
+          <el-form-item label="商品状态" :label-width="formLabelWidth" prop="status">
             <el-switch
                 v-model.number="product.status"
                 active-text="上架"
                 inactive-text="下架"
+                :active-value="1"
+                :inactive-value="0">
+            </el-switch>
+          </el-form-item>
+          <el-form-item label="购买状态" :label-width="formLabelWidth" prop="buy_status">
+            <el-switch
+                v-model.number="product.buy_status"
+                active-text="可购买"
+                inactive-text="不可购买"
                 :active-value="1"
                 :inactive-value="0">
             </el-switch>
@@ -217,7 +234,8 @@ export default {
       status: 1,
       cover: 0,
       cover_img: '',
-      banner: []
+      banner: [],
+      buy_status: 1
     },
     productRule:{
       name: [
@@ -290,7 +308,7 @@ export default {
 
     showEdit(scope){
       let product = this.list[scope.$index]
-      let {product_id, name, sort, content, status, price, back_money, cover, cover_img, banner} = product
+      let {product_id, name, sort, content, status, price, back_money, cover, cover_img, banner, buy_status} = product
 
       this.product = {
         product_id,
@@ -302,7 +320,8 @@ export default {
         back_money:parseFloat(back_money),
         cover,
         cover_img: cover_img.path,
-        banner: []
+        banner: [],
+        buy_status
       }
 
       let banners = []
@@ -386,7 +405,7 @@ export default {
     submit(){
       this.$refs['product'].validate((valid) => {
         if (valid) {
-          let {name, price, back_money, cover, banner, sort, status, content, product_id} = this.product;
+          let {name, price, back_money, cover, banner, sort, status, content, buy_status, product_id} = this.product;
           let images = [];
           let ban_sort = 1;
           for(var ban of banner){
@@ -401,7 +420,7 @@ export default {
             return false;
           }
           let params = {
-            name, price, back_money, cover, images, sort, status, content
+            name, price, back_money, cover, images, sort, status, content, buy_status
           };
           if(product_id){//修改
             params.product_id = product_id

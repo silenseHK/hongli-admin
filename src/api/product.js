@@ -20,3 +20,12 @@ export function del(data) {
     const url = `/goods/delete`
     return $axios.post(url, data)
 }
+
+export function orders(params) {
+    let url = `/goods/orders?`
+    for(var k in params){
+        if(params[k])
+            url += "&" + k + "=" + params[k]
+    }
+    return $axios.get(url)
+}

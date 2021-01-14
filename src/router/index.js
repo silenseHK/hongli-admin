@@ -205,12 +205,19 @@ export const asyncRoutes = [
     component: Layout,
     name: "/product/search",
     redirect: "/product/index",
+    meta: { title: "商品管理", icon: "el-icon-goods" },
     children: [
       {
         path: "index",
         name: "/product/search",
-        component: () => import("@/views/product"),
-        meta: { title: "商品管理", icon: "el-icon-bank-card" },
+        component: () => import("@/views/product/index"),
+        meta: { title: "商品列表", icon: "el-icon-goods" },
+      },
+      {
+        path: "orders",
+        name: "/product/search",
+        component: () => import("@/views/product/orders"),
+        meta: { title: "商品订单", icon: "el-icon-s-order" },
       }
     ],
   },
