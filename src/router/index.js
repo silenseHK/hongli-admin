@@ -139,7 +139,7 @@ export const asyncRoutes = [
         path: "index",
         name: "/admin/findAll",
         component: () => import("@/views/banner/index"),
-        meta: { title: "banner管理", icon: "el-icon-user-solid" },
+        meta: { title: "banner管理", icon: "el-icon-picture-outline" },
       },
     ],
   },
