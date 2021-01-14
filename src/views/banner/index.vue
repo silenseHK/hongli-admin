@@ -71,11 +71,11 @@
                 <el-table-column
                         prop="url"
                         label="跳转地址"
-                        width="180"
+                        width="300"
                 ></el-table-column>
                 <el-table-column
                         label="图片"
-                        width="180"
+                        width="300"
                 >
                     <template slot-scope="scope">
                         <el-image
@@ -88,7 +88,7 @@
                 <el-table-column
                         label="操作"
                         align="center"
-                        min-width="260"
+                        width="300"
                         prop="status"
                 >
                     <template slot-scope="scope">
