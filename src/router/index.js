@@ -153,7 +153,7 @@ export const asyncRoutes = [
         path: "index",
         name: "/role/findAll",
         component: () => import("@/views/role/Role"),
-        meta: { title: "角色管理", icon: "el-icon-user" },
+        meta: { title: "角色管理", icon: "el-icon-user"},
       },
     ],
   },

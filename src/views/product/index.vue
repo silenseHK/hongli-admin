@@ -428,8 +428,6 @@ export default {
               if(res.code == 200){
                 this.$message.success('操作成功')
                 this.getList()
-              }else{
-                this.$message.error(res.msg)
               }
             })
           }else{//新增
@@ -440,8 +438,6 @@ export default {
                 this.getList()
                 //初始化表单
                 this.initForm()
-              }else{
-                this.$message.error(res.msg)
               }
             })
           }
