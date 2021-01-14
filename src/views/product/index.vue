@@ -47,7 +47,7 @@
 
         <el-table-column prop="created_at" label="添加时间" width="200"></el-table-column>
         <el-table-column prop="updated_at" label="编辑时间" width="200"></el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column label="操作" width="200" fixed="right">
           <template slot-scope="scope">
             <el-button type="primary" plain @click="showEdit(scope)">编辑</el-button>
             <el-button type="primary" plain @click="del(scope)">删除</el-button>
