@@ -135,27 +135,6 @@
                         label-width="80px"
                         class="demo-ruleForm login-container"
                 >
-                    <el-form-item prop="uploads_id" label="图片">
-                        <template>
-                            <el-upload
-                                    class="upload-demo"
-                                    :action="uploadUrl"
-                                    :on-preview="handlePreview"
-                                    :on-remove="handleRemove"
-                                    :before-remove="beforeRemove"
-                                    :multiple="false"
-                                    accept="image/*"
-                                    :data="updateData"
-                                    :headers="{token: this.token}"
-                                    :limit="1"
-                                    :on-exceed="handleExceed"
-                                    :on-success="handleSuccess"
-                                    :file-list="fileList">
-                                <el-button size="small" type="primary">点击上传</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
-                            </el-upload>
-                        </template>
-                    </el-form-item>
                     <el-form-item label="展示位置" prop="location">
                         <template>
                             <el-select
@@ -198,6 +177,27 @@
                                     placeholder="跳转地址"
                                     size="small"
                             ></el-input>
+                        </template>
+                    </el-form-item>
+                    <el-form-item prop="uploads_id" label="图片">
+                        <template>
+                            <el-upload
+                                    class="upload-demo"
+                                    :action="uploadUrl"
+                                    :on-preview="handlePreview"
+                                    :on-remove="handleRemove"
+                                    :before-remove="beforeRemove"
+                                    :multiple="false"
+                                    accept="image/*"
+                                    :data="updateData"
+                                    :headers="{token: this.token}"
+                                    :limit="1"
+                                    :on-exceed="handleExceed"
+                                    :on-success="handleSuccess"
+                                    :file-list="fileList">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
+                            </el-upload>
                         </template>
                     </el-form-item>
                 </el-form>
