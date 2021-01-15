@@ -64,6 +64,11 @@
                         width="180"
                 ></el-table-column>
                 <el-table-column
+                        prop="sort"
+                        label="权重值"
+                        width="180"
+                ></el-table-column>
+                <el-table-column
                         prop="type_name"
                         label="类型"
                         width="180"
@@ -166,6 +171,10 @@
                                 ></el-option>
                             </el-select>
                         </template>
+                    </el-form-item>
+                    <el-form-item label="权重" prop="sort" >
+                        <el-input-number v-model="addFormData.sort" :min="1" :max="9999"></el-input-number>
+                        <div class="el-upload__tip">权重值越大排序越靠前</div>
                     </el-form-item>
                     <el-form-item label="类型" prop="type">
                         <template>
@@ -270,6 +279,7 @@
                 addFormData: {
                     id: 0,
                     uploads_id: "",
+                    sort: 1,
                     location: 0,
                     type: 1,// 1 不跳转， 2 内链 3 外链
                     url: "", //type不等于1 对应的地址
@@ -375,8 +385,8 @@
             },
             modifyBanner(row) {
                 this.dialogVisible = true;
-                let {id, location, type, url, uploads_id} = row;
-                this.addFormData = {id, location, type, url, uploads_id};
+                let {id, location, type, url, uploads_id, sort} = row;
+                this.addFormData = {id, location, type, url, uploads_id, sort};
                 if (row.uploads.hasOwnProperty('path') && row.uploads.path) {
                     this.fileList = [
                         {
