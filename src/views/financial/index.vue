@@ -198,39 +198,40 @@
         </el-table-column>
         <el-table-column key="7" prop="money" label="提现金额" width="130">
         </el-table-column>
-        <el-table-column prop="money" key="8" label="提现方式" width="130">
+        <el-table-column prop="type" key="8" label="提现类型" width="130">
           <template slot-scope="scope">
             <span>{{ scope.row.type === 0 ? "用户提现" : "代理提现" }}</span>
           </template>
         </el-table-column>
+        <el-table-column key="9" prop="with_type" label="提现渠道" width="130"></el-table-column>
 
         <el-table-column
           prop="service_charge"
-          key="9"
+          key="10"
           label="手续费"
           width="130"
         >
         </el-table-column>
-        <el-table-column prop="payment" key="10" label="打款金额" width="130">
+        <el-table-column prop="payment" key="11" label="打款金额" width="130">
         </el-table-column>
         <el-table-column
           prop="account_holder"
-          key="11"
+          key="12"
           label="收款人"
           width="130"
         >
         </el-table-column>
         <el-table-column
-          key="12"
+          key="13"
           prop="ifsc_code"
           label="IFSC CODE"
           width="130"
         >
         </el-table-column>
-        <el-table-column key="13" prop="phone" label="持卡人电话" width="130">
+        <el-table-column key="14" prop="phone" label="持卡人电话" width="130">
         </el-table-column>
         <el-table-column
-          key="14"
+          key="15"
           prop="bank_number"
           label="银行卡号"
           width="170"
@@ -238,7 +239,7 @@
         </el-table-column>
 
         <el-table-column
-          key="15"
+          key="16"
           prop="create_time"
           label="申请时间"
           width="180"
@@ -248,21 +249,21 @@
           </template>
         </el-table-column>
         <el-table-column
-          key="16"
+          key="17"
           prop="user.total_recharge"
           label="累计充值"
           width="130"
         >
         </el-table-column>
         <el-table-column
-          key="17"
+          key="18"
           prop="user.cl_withdrawal"
           label="累计提现"
           width="130"
         >
         </el-table-column>
         <el-table-column
-          key="18"
+          key="19"
           prop="user.cl_commission"
           label="累计提佣"
           width="130"
@@ -272,19 +273,19 @@
           prop="user.cl_betting_total"
           label="累计单数"
           width="130"
-          key="19"
+          key="20"
         >
         </el-table-column>
         <el-table-column
           prop="user.cl_betting"
           label="累计下单金额"
           width="130"
-          key="20"
+          key="21"
         >
         </el-table-column>
         <el-table-column
           prop="approval_time"
-          key="21"
+          key="22"
           label="审批时间"
           width="180"
         >
@@ -295,13 +296,13 @@
 
         <el-table-column
           prop="order_no"
-          key="22"
+          key="23"
           label="交易订单号"
           width="230"
         >
         </el-table-column>
         <el-table-column
-          key="23"
+          key="24"
           v-if="status == 2"
           label="审核不通过理由"
           width="180"
@@ -312,7 +313,7 @@
         </el-table-column>
         <el-table-column
           prop="loan_time"
-          key="24"
+          key="25"
           label="到账时间"
           width="180"
           v-else

@@ -125,13 +125,41 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
+        <el-tab-pane label="APP配置" name="four">
+          <el-form label-width="130px" :model="app" :rules="appRules" ref="app">
+            <el-form-item label="下载链接:" style="width: 30%" prop="link">
+              <el-input
+                  v-model="app.link"
+                  placeholder=""
+                  size="small"
+                  clearable
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item label="开启状态" style="width: 30%" prop="status">
+              <el-switch
+                  v-model="app.status"
+                  active-text="开启"
+                  inactive-text="关闭"
+                  active-value=1
+                  inactive-value=0>
+              </el-switch>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" size="small" @click="handleEditApp"
+              >修改</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
 </template>
 
 <script>
-import { systemAll, systemEdit, serviceEdit, serviceAll, crispEdit, crispAll } from "@/api/system";
+import { systemAll, systemEdit, serviceEdit, serviceAll, crispEdit, crispAll, appAll, apppEdit } from "@/api/system";
 export default {
   name: "Configuration",
   data: () => ({
@@ -167,6 +195,19 @@ export default {
         { required: true, message: '请选择开启状态', trigger: 'blur' },
       ]
     },
+    app:{
+      link: '',
+      status: "0"
+    },
+    appRules: {
+      link: [
+        { required: true, message: '请输入链接', trigger: 'blur' },
+        { min: 1, max: 255, message: '长度在 1 到 255 个字符', trigger: 'blur' }
+      ],
+      status: [
+        { required: true, message: '请选择开启状态', trigger: 'blur' },
+      ]
+    },
     activeName: 'one',
   }),
   activated() {
@@ -183,6 +224,10 @@ export default {
           break;
         case 'three':
           this.getCrisp();
+          break;
+        case 'four':
+          this.getApp();
+          break;
       }
     },
     getStytem() {
@@ -255,8 +300,22 @@ export default {
           });
         }
       });
+    },
 
-
+    handleEditApp(){
+      this.$refs['app'].validate((valid) => {
+        if (valid) {
+          let [link, status] = [this.app.link, this.app.status]
+          apppEdit({link, status}).then((res) => {
+            if (res.code === 200) {
+              this.$message.success("修改成功");
+              this.handleClick();
+            } else {
+              this.$message.error(res.msg);
+            }
+          });
+        }
+      });
     },
 
     getService(){
@@ -274,6 +333,19 @@ export default {
         if(res.code === 200){
           this.crisp = {
             id: res.data.crisp_website_id,
+            status: res.data.status
+          }
+        }else{
+          this.$message.error(res.msg);
+        }
+      })
+    },
+
+    getApp(){
+      appAll().then((res)=>{
+        if(res.code === 200){
+          this.app = {
+            link: res.data.link,
             status: res.data.status
           }
         }else{

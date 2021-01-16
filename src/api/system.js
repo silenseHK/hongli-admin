@@ -184,3 +184,13 @@ export const crispAll = () => {
   const url = "/system/crisp"
   return $axios.get(url)
 }
+
+export const appAll = () => {
+  const url = "/system/app"
+  return $axios.get(url)
+}
+
+export const apppEdit = (params) => {
+  const url = "/system/app"
+  return $axios.post(url, params)
+}
