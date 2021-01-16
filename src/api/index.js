@@ -42,7 +42,7 @@ $axios.interceptors.response.use(
       if(response.data.code == 200){
         return Promise.resolve(response.data)
       }else{
-        Message.error(response.data.msg)
+        // Message.error(response.data.msg)
         return Promise.resolve(response.data)
       }
     } else {
