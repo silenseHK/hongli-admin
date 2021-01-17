@@ -194,3 +194,13 @@ export const apppEdit = (params) => {
   const url = "/system/app"
   return $axios.post(url, params)
 }
+
+export const aboutUsAll = (params) => {
+  const url = "/system/getAboutUs"
+  return $axios.post(url, params)
+}
+
+export const aboutUsEdit = (params) => {
+  const url = "/system/aboutUs"
+  return $axios.post(url, params)
+}

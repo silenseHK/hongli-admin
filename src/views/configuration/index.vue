@@ -51,6 +51,9 @@
                 <el-radio label="group">
                   <img style="width:40px;height:40px;background:#ddd;" src="../../assets/service/group.png" />
                 </el-radio>
+                <el-radio label="telegram">
+                  <img style="width:40px;height:40px;background:#ddd;" src="../../assets/service/telegram.png" />
+                </el-radio>
               </el-radio-group>
             </el-form-item>
 
@@ -77,6 +80,9 @@
                 </el-radio>
                 <el-radio label="group">
                   <img style="width:40px;height:40px;background:#ddd;" src="../../assets/service/group.png" />
+                </el-radio>
+                <el-radio label="telegram">
+                  <img style="width:40px;height:40px;background:#ddd;" src="../../assets/service/telegram.png" />
                 </el-radio>
               </el-radio-group>
             </el-form-item>
@@ -153,16 +159,168 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
+        <el-tab-pane label="AboutUs配置" name="five">
+          <el-tabs tab-position="left" style="height: auto;" v-model="aboutUsActive" @tab-click="handleABoutUsClick">
+            <el-tab-pane name="1" label="Privacy Policy">
+              <el-form label-width="130px" label-position="top" :model="privacyPolicy" :rules="privacyPolicyRules" ref="privacyPolicy">
+
+                <el-form-item label="标题:" style="width: 375px;" prop="title">
+                  <el-input
+                      v-model="privacyPolicy.title"
+                      placeholder=""
+                      size="small"
+                      clearable
+                  ></el-input>
+                </el-form-item>
+
+                <el-form-item label="详情:" style="width: 375px;">
+                  <quill-editor
+                      v-model="privacyPolicy.content"
+                      ref="privacyPolicyQuillEditor"
+                      :options="editorOption"
+                      >
+                  </quill-editor>
+                </el-form-item>
+
+                <el-form-item>
+                  <el-button type="primary" size="small" @click="handleAboutMeEdit"
+                  >修改</el-button
+                  >
+                </el-form-item>
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane name="2" label="Risk Disclosure Agreement">
+              <el-form label-width="130px" label-position="top" :model="riskDisclosureAgreement" :rules="privacyPolicyRules" ref="riskDisclosureAgreement">
+
+                <el-form-item label="标题:" style="width: 375px;" prop="title">
+                  <el-input
+                      v-model="riskDisclosureAgreement.title"
+                      placeholder=""
+                      size="small"
+                      clearable
+                  ></el-input>
+                </el-form-item>
+
+                <el-form-item label="详情:" style="width: 375px;">
+                  <quill-editor
+                      v-model="riskDisclosureAgreement.content"
+                      ref="riskDisclosureAgreementQuillEditor"
+                      :options="editorOption"
+                  >
+                  </quill-editor>
+                </el-form-item>
+
+                <el-form-item>
+                  <el-button type="primary" size="small" @click="handleAboutMeEdit"
+                  >修改</el-button
+                  >
+                </el-form-item>
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane name="3" label="About Us">
+              <el-form label-width="130px" label-position="top" :model="aboutUs" :rules="privacyPolicyRules" ref="aboutUs">
+
+                <el-form-item label="标题:" style="width: 375px;" prop="title">
+                  <el-input
+                      v-model="aboutUs.title"
+                      placeholder=""
+                      size="small"
+                      clearable
+                  ></el-input>
+                </el-form-item>
+
+                <el-form-item label="详情:" style="width: 375px;">
+                  <quill-editor
+                      v-model="aboutUs.content"
+                      ref="aboutUsQuillEditor"
+                      :options="editorOption"
+                  >
+                  </quill-editor>
+                </el-form-item>
+
+                <el-form-item>
+                  <el-button type="primary" size="small" @click="handleAboutMeEdit"
+                  >修改</el-button
+                  >
+                </el-form-item>
+              </el-form>
+            </el-tab-pane>
+          </el-tabs>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
+
+    <el-upload
+        class="ivu-upload"
+        :data="uploadData"
+        :show-upload-list="false"
+        :on-success="handleEditorSuccess"
+        :format="['jpg','jpeg','png']"
+        :max-size="2048"
+        :action="baseUrl"
+        :headers="headers"
+    >
+      <el-button class="ivu-btn" icon="ios-cloud-upload-outline" ></el-button>
+    </el-upload>
   </div>
 </template>
 
 <script>
-import { systemAll, systemEdit, serviceEdit, serviceAll, crispEdit, crispAll, appAll, apppEdit } from "@/api/system";
+import { systemAll, systemEdit, serviceEdit, serviceAll, crispEdit, crispAll, appAll, apppEdit, aboutUsAll, aboutUsEdit } from "@/api/system";
+import { quillEditor } from "vue-quill-editor";
+import phpUrl from "@/utils/baseUrl";
+import store from "@/store"
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
+const token =  store.getters.token
+const toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{'header': 1}, {'header': 2}],               // custom button values
+  [{'list': 'ordered'}, {'list': 'bullet'}],
+  [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+  [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+  [{'direction': 'rtl'}],                         // text direction
+
+  [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+  [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+  [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+  [{'font': []}],
+  [{'align': []}],
+  ['link', 'image', 'video'],
+  ['clean']                                         // remove formatting button
+]
 export default {
   name: "Configuration",
+  components: {
+    quillEditor
+  },
   data: () => ({
+    baseUrl: phpUrl + '/upload',
+    headers: {token: token},
+
+    privacyPolicy: {
+      content: '',
+      title: ''
+    },
+    riskDisclosureAgreement: {
+      content: '',
+      title: ''
+    },
+    aboutUs: {
+      content: '',
+      title: ''
+    },
+    privacyPolicyRules:{
+      title: [
+        { required: true, message: '请输入标题', trigger: 'blur' },
+        { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+      ],
+    },
+    uploadData: {name:"file"},
     systemList: {
       id: "",
       whats_group_url: "",
@@ -208,7 +366,27 @@ export default {
         { required: true, message: '请选择开启状态', trigger: 'blur' },
       ]
     },
-    activeName: 'one',
+    activeName: 'five',
+
+    editorOption: {
+      modules: {
+        toolbar: {
+          container: toolbarOptions,  // 工具栏
+          handlers: {
+            'image': function (value) {
+              if (value) {
+                // 调用iview图片上传
+                document.querySelector('.ivu-upload .ivu-btn').click()
+              } else {
+                this.quill.format('image', false);
+              }
+            }
+          }
+        }
+      }
+    },
+
+    aboutUsActive: '1',
   }),
   activated() {
     this.getStytem();
@@ -228,7 +406,13 @@ export default {
         case 'four':
           this.getApp();
           break;
+        case 'five':
+          this.getAboutUs();
+          break;
       }
+    },
+    handleABoutUsClick(){
+      this.getAboutUs()
     },
     getStytem() {
       systemAll().then((res) => {
@@ -352,7 +536,94 @@ export default {
           this.$message.error(res.msg);
         }
       })
-    }
+    },
+
+    getAboutUs(){
+      aboutUsAll({type:this.aboutUsActive}).then((res)=>{
+        if(res.code === 200){
+          let field;
+          switch (parseInt(this.aboutUsActive)){
+            case 1:
+              field = 'privacyPolicy';
+              break;
+            case 2:
+              field = 'riskDisclosureAgreement';
+              break;
+            case 3:
+              field = 'aboutUs';
+              break;
+          }
+          this[field] = {
+            title: res.data.title,
+            content: res.data.content
+          }
+        }else{
+          this.$message.error(res.msg);
+        }
+      })
+    },
+
+    handleEditorSuccess (res) {
+      // 获取富文本组件实例
+      let field;
+      switch (parseInt(this.aboutUsActive)){
+        case 1:
+          field = 'privacyPolicy';
+          break;
+        case 2:
+          field = 'riskDisclosureAgreement';
+          break;
+        case 3:
+          field = 'aboutUs';
+          break;
+      }
+      let quill = this.$refs[field + 'QuillEditor'].quill
+      // 如果上传成功
+      if (res) {
+        // 获取光标所在位置
+        let length = quill.getSelection().index;
+        // 插入图片，res为服务器返回的图片链接地址
+        quill.insertEmbed(length, 'image', res.data.src)
+        // 调整光标到最后
+        quill.setSelection(length + 1)
+      } else {
+        // 提示信息，需引入Message
+        this.$message.error('图片插入失败')
+      }
+    },
+
+    handleAboutMeEdit(){
+      let type = 0;
+      let field = '';
+      console.log(this.aboutUsActive)
+      switch (parseInt(this.aboutUsActive)){
+        case 1:
+          type = 1;
+          field = 'privacyPolicy';
+          break;
+        case 2:
+          type = 2;
+          field = 'riskDisclosureAgreement';
+          break;
+        case 3:
+          type = 3;
+          field = 'aboutUs';
+          break;
+      }
+      console.log(field)
+      let params =this[field];
+      console.log(params)
+      params.type = type
+      aboutUsEdit(params).then((res) => {
+        if (res.code === 200) {
+          this.$message.success("修改成功");
+          this.handleClick();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+
+    },
 
   },
 };
@@ -363,5 +634,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.ivu-upload {
+  display: none;
 }
 </style>
