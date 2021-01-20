@@ -1,4 +1,6 @@
 const getters = {
+  tabList: (state) => state.pageIndex.tabList,
+  nativeTab: (state) => state.pageIndex.nativeTab,
   token: (state) => state.user.token,
   userName: (state) => state.user.userName,
   roles: (state) => state.user.roles,

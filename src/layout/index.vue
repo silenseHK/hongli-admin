@@ -9,6 +9,7 @@
     </transition>
     <div class="wrapper_con">
       <side-bar></side-bar>
+      <page-index></page-index>
       <page-main></page-main>
     </div>
   </div>
@@ -19,6 +20,7 @@ import SideBar from './components/sideBar'
 import MHeader from './components/header'
 import NotificatBar from '@/components/NotificatBar'
 import PageMain from './components/PageMain'
+import pageIndex from './components/pageIndex/pageIndex'
 import { mapGetters } from 'vuex'
 // import driver from '@/mixins/useDriver'
 export default {
@@ -37,7 +39,8 @@ export default {
     SideBar,
     MHeader,
     NotificatBar,
-    PageMain
+    PageMain,
+    pageIndex
   }
 }
 </script>

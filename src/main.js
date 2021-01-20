@@ -24,6 +24,8 @@ import "./assets/font_qfueigoh4o/iconfont"
 */
 import global from "./utils/global"
 Vue.prototype.GLOBAL = global
+Vue.prototype.layer = window.layer;
+
 // Vue.use(animated)
 // import SlideVerify from 'vue-monoplasty-slide-verify'
 
