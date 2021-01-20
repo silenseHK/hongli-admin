@@ -277,7 +277,7 @@ export default {
     speciesList: [
       {
         id: 1,
-        lagel: "Gold",
+        lagel: "Platinum",
       },
       {
         id: 2,
@@ -285,11 +285,11 @@ export default {
       },
       {
         id: 3,
-        lagel: "Jewelry",
+        lagel: "Gold",
       },
       {
         id: 4,
-        lagel: "Other",
+        lagel: "Classic",
       },
     ],
     colors: [

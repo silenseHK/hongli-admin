@@ -7,21 +7,21 @@
           size="medium"
           @click="handelOther"
           :plain="plain1"
-          >Other</el-button
+          >Classic</el-button
         >
         <el-button
           type="primary"
           size="medium"
           @click="handelGold"
           :plain="plain2"
-          >Gold</el-button
+          >Platinum</el-button
         >
         <el-button
           type="success"
           size="medium"
           @click="handelJewelry"
           :plain="plain3"
-          >Jewelry</el-button
+          >Gold</el-button
         >
         <el-button
           type="warning"
