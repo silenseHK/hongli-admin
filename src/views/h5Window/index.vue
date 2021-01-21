@@ -17,6 +17,20 @@
         ref="myQuillEditor" 
         :options="editorOption" 
         ></quill-editor>
+        <el-form label-position="top" label-width="80px" v-show="currentNav==1" v-model="btn">
+          <el-form-item label="按钮一文字:">
+            <el-input v-model="btn.left.text"></el-input>
+          </el-form-item>
+          <el-form-item label="按钮一链接:">
+            <el-input v-model="btn.left.link"></el-input>
+          </el-form-item>
+          <el-form-item label="按钮二文字:">
+            <el-input v-model="btn.right.text"></el-input>
+          </el-form-item>
+          <el-form-item label="按钮二链接:">
+            <el-input v-model="btn.right.link"></el-input>
+          </el-form-item>
+        </el-form>
       </div>
       <el-button type="primary" @click="haddleSubmit">提交</el-button>
     </el-card>
@@ -58,8 +72,17 @@ export default {
         name: "未登录弹框",
         id: "2",
       },
-    ]
-   
+    ],
+     btn:{
+        left: {
+          text: '按钮一',
+          link: 'http://www.baidu.com'
+        },
+       right: {
+         text: '按钮二',
+         link: 'http://mail.qq.com'
+       }
+     },
       
   }),
   components: {
@@ -79,8 +102,27 @@ export default {
     getH5WindowInfoData(){
       getH5WindowInfo().then(resp => {
         if(resp.code == 200){
-          let content = (this.currentNav == 1 ? resp.data.loginAlert : resp.data.logoutAlert)
-          this.content = (content.length == '' ? '' : this.htmlDecodeByRegExp(content))
+          if(this.currentNav == 1){
+            let content = resp.data.loginAlertValue.content;
+            this.content = content.length == '' ? '' : this.htmlDecodeByRegExp(content)
+            let btn = resp.data.loginAlertValue.btn;
+            if(!btn){
+              btn = {
+                left: {
+                  text: '',
+                  link: ''
+                },
+                right: {
+                  text: '',
+                  link: ''
+                }
+              }
+            }
+            this.btn = btn
+          }else{
+            let content = resp.data.logoutAlertValue.content;
+            this.content = (content.length == '' ? '' : this.htmlDecodeByRegExp(content))
+          }
         }
       })
     },
@@ -122,9 +164,24 @@ export default {
         setTimeout(() => {
           this.canClick = true
         },2500)
+        let type = this.currentNav;
         let params = {
-          type: this.currentNav,
+          type: type,
           content: this.htmlEncodeByRegExp(this.content)
+        }
+        if(type == 1){
+          let {left, right} = this.btn;
+          let [left_text, left_link, right_text, right_link] = [left.text, left.link, right.text, right.link]
+          if(!left_text || !left_link || !right_text || !right_link){
+            this.$message.warning('请输入必要的值')
+            return;
+          }
+          params.left = {};
+          params.right = {};
+          params.left.text = left_text;
+          params.right.text = right_text;
+          params.left.link = left_link;
+          params.right.link = right_link;
         }
         submitH5WindowInfo(params).then(resp => {
           if(resp.code == 200){
