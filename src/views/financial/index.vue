@@ -170,8 +170,8 @@
           width="130"
         >
         </el-table-column>
-        <el-table-column key="5" prop="nickname" label="会员名称" width="330">
-        </el-table-column>
+<!--        <el-table-column key="5" prop="nickname" label="会员名称" width="330">-->
+<!--        </el-table-column>-->
         <el-table-column
           key="6"
           prop="pay_status"
@@ -181,14 +181,17 @@
         >
           <template slot-scope="scope">
             <el-tag
-              type="warning"
+                v-if="scope.row.pay_status != 0"
               size="mini"
               effect="dark"
-              v-if="scope.row.pay_status === 0"
-              >三方未支付</el-tag
+              :type="(scope.row.pay_status == 1 ? 'success' : (scope.row.pay_status == 2 ? 'info' : (scope.row.pay_status == 3 ? 'warning' : 'danger')))"
+              >{{scope.row.pay_status_json.text}}</el-tag
             >
-            <el-tag type="warning" size="mini" effect="dark" v-else
-              >三方已支付</el-tag
+            <el-tag
+                v-if="scope.row.pay_status == 0"
+                size="mini"
+                effect="dark"
+            >{{scope.row.pay_status_json.text}}</el-tag
             >
 
             <!-- <span>{{
@@ -715,32 +718,31 @@ export default {
      */
     handleCancel(item) {
       const { id } = item;
-      this.$confirm("你确定取消此条提现, 是否继续?", "提示", {
+
+      this.$confirm("请输入取消备注", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      })
-        .then(() => {
-          const params = {
-            id: id,
-          };
-          getCancel(params)
-            .then((res) => {
-              if (res.code === 200) {
-                this.$message.success(res.msg);
-              } else {
-                this.$message.error(res.msg);
-              }
-              this.getCharge();
-            })
+        showInput: true,
+        inputType: "textarea",
+        showClose: false,
+      }).then(({ value }) => {
+        const params = {
+          id: id,
+          message: value
+        };
+        console.log(params);
+        getCancel(params)
+          .then((res) => {
+            if (res.code === 200) {
+              this.$message.success(res.msg);
+            } else {
+              this.$message.error(res.msg);
+            }
+            this.getCharge();
+          })
             .catch((error) => console.error(error));
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+          }).catch(() => {});
     },
   },
 };
