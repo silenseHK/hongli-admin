@@ -5,6 +5,16 @@
         <el-row :gutter="24">
           <el-form :model="orderData" ref="stroleRef">
             <el-col :span="3" :xl="3" :lg="6" :md="24" :sm="24" :xs="24">
+              <el-form-item prop="user_id">
+                <el-input
+                        v-model="orderData.user_id"
+                        placeholder="会员ID"
+                        size="medium"
+                        clearable
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="3" :xl="3" :lg="6" :md="24" :sm="24" :xs="24">
               <el-form-item prop="issue">
                 <el-input
                   v-model="orderData.issue"
@@ -92,7 +102,7 @@
               :span="6"
               :offset="0"
               :xl="6"
-              :lg="8"
+              :lg="12"
               :md="24"
               :sm="24"
               :xs="24"
@@ -116,7 +126,7 @@
               :span="5"
               :offset="0"
               :xl="6"
-              :lg="6"
+              :lg="8"
               :md="24"
               :sm="24"
               :xs="24"
@@ -161,7 +171,7 @@
         </el-table-column>
         <el-table-column prop="user.phone" label="会员手机号" width="150">
         </el-table-column>
-        <el-table-column prop="user.nickname" label="会员昵称" width="120">
+        <el-table-column prop="user.id" label="会员ID" width="120">
         </el-table-column>
 
         <el-table-column prop="betting_time" label="下单时间" width="150">
@@ -169,9 +179,8 @@
             <span>{{ scope.row.betting_time | formatDate }}</span>
           </template>
         </el-table-column>
-
-        <el-table-column prop="money" label="合约金额" width="120">
-        </el-table-column>
+        <el-table-column prop="win_lose_money" label="结算金额" width="120"></el-table-column>
+        <el-table-column prop="money" label="合约金额" width="120"></el-table-column>
         <el-table-column prop="odds" label="倍率" width="120">
         </el-table-column>
         <el-table-column prop="game_c_x.name" label="下单选择" width="100">
@@ -261,6 +270,7 @@ export default {
   data: () => ({
     orderLists: [],
     orderData: {
+      user_id:"",
       phone: "",
       time: [],
       issue: "",
@@ -491,6 +501,7 @@ export default {
     },
     getSearshs() {
       const {
+        user_id,
         phone,
         time,
         issue,
@@ -514,6 +525,7 @@ export default {
         selection: selectionType,
         betting_num: issue,
         phone: phone,
+        user_id: user_id,
         game_id: speciesType,
         number: name,
         type: drawType,
@@ -526,6 +538,7 @@ export default {
           selection: "=",
           betting_num: "=",
           phone: "=",
+          user_id: "=",
           game_id: "=",
           number: "=",
           type: "=",

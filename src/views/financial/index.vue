@@ -165,13 +165,13 @@
         </el-table-column>
         <el-table-column
           key="4"
-          prop="user.phone"
+          prop="phone"
           label="会员手机号"
           width="130"
         >
         </el-table-column>
-<!--        <el-table-column key="5" prop="nickname" label="会员名称" width="330">-->
-<!--        </el-table-column>-->
+        <el-table-column key="5" prop="user.id" label="会员ID" width="330">
+        </el-table-column>
         <el-table-column
           key="6"
           prop="pay_status"

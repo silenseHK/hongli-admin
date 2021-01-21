@@ -10,6 +10,7 @@
         mode="vertical"
         :collapse-transition="false"
         :collapse="opened"
+        @select="menuSelect"
       >
         <sidebar-item
           v-for="item in routes"
@@ -38,6 +39,14 @@ export default {
   },
   created(){
     // console.log('sideBar接收的roules--->',this.routes)
+  },
+  methods: {
+    menuSelect(index, indexPath, item){
+      this.addTab(item);
+    },
+    addTab(item){
+      this.$store.commit('pageIndex/addTab', {name: item.$el.textContent, id: item.index})
+    }
   }
 };
 </script>
