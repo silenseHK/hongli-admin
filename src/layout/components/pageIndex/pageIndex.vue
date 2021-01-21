@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="page-index-cont">
         <div class="nav-right-2" v-if="tabList && tabList.length">
             <div class="towards-left" @click="scrollToLeft" title="向左滑">
                 <i class="el-icon-arrow-left"></i>
@@ -37,16 +37,8 @@
 
         },
         data() {
-            var homeTab = {
-                id: 'home',	// 唯一标识
-                name: '首页',
-                // view: ()=> import('@/views/dashboard/index'),
-                hide_close: true,	// 隐藏关闭键
-                is_rend: true,
-            };
             return {
                 scrollX: 0,// 滚动条位置
-                homeTab: homeTab,		// 主页tab
                 rightTab: null,	// 右键正在操作的tab
                 rightShow: false,	// 右键菜单是否正在显示
                 rightStyle: {		// 卡片标题右键菜单的样式
@@ -55,7 +47,6 @@
                     maxHeight: '0px'	// 右键菜单的最高高度 (控制是否展开)
                 },
                 is_show_tabbar: true,		// 是否显示tab栏
-                breMenuList: [homeTab],			// 面包屑导航栏的tab数据
                 default_active: '/',	// 默认的高亮菜单id
 
             }
@@ -134,25 +125,11 @@
                 tab.is_rend = true;			// 是否显示, 利用此来强制刷新子组件
                 return tab.is_init_view = true;
             },
-            // 添加一个Tab  {id,name,url}
-            addTab: function (tab) {
-                tab.is_have_en = this.is_have_en(tab.name);	// 有英文字母的不能加字体加粗动画, 因为会影响tab选项卡的width尺寸, 造成动画混乱
-                // tab.view = () => import('@/sa-view/HelloWorld.vue');
-                this.initTabView(tab);
-                this.tabList.push(tab);
-                // this.addSlide(tab);
-            },
             // 显示某个页面  (如果不存在, 则先添加)
             showTab: function (tab) {
                 // 如果是当前正在显示的tab , 则直接 返回
                 if (tab == this.nativeTab) {
                     return;
-                }
-                // 如果没有先添加
-                if (this.getTabById(tab.id) == null) {
-                    this.addTab(tab);
-                } else {
-                    this.$store.commit("pageIndex/setNativeTab", tab)
                 }
                 // 然后显示
                 this.$nextTick(function () {
@@ -204,6 +181,13 @@
 </script>
 
 <style lang="scss" scoped>
+    .page-index-cont {
+        width: 100%;
+        position: fixed;
+        top: 50px;
+        z-index: 999;
+        border-top: 1px solid rgba(187, 179, 179, 0.53);
+    }
     .nav-right-2 {
         margin-left: 200px;
     }
@@ -271,7 +255,6 @@
     .nav-right-2 .tab-title-box {
         position: absolute;
         left: 0px;
-        display: block;
         transition: all 0.2s;
         white-space: nowrap;
         display: flex;
@@ -284,11 +267,9 @@
         cursor: pointer;
         float: left;
         transition: all 0.15s;
-        white-space: nowrap;
         overflow: hidden;
         text-decoration: none;
         color: #333;
-        display: inline-block;
     }
 
     .nav-right-2 .tab-title-2 {
