@@ -286,6 +286,10 @@ export default {
     //种类
     speciesList: [
       {
+        id: '',
+        lagel: "所有",
+      },
+      {
         id: 1,
         lagel: "Platinum",
       },
@@ -316,6 +320,10 @@ export default {
     ],
     //下单选择
     selection: [
+      {
+        id: '',
+        label: "所有",
+      },
       {
         id: "奇数",
         label: "奇数",
@@ -370,6 +378,10 @@ export default {
       },
     ],
     drawList: [
+      {
+        id: '',
+        label: "所有",
+      },
       {
         id: 0,
         label: "未结算",
@@ -427,8 +439,15 @@ export default {
       this.es.addEventListener(
         "message",
         (event) => {
-          let data = JSON.parse(event.data);
-          this.orderLists = data;
+          let {phone, time, issue, speciesType, selectionType, name, drawType, user_id} = this.orderData
+          if(phone || time.length > 0 || issue || speciesType || selectionType || name || drawType || user_id){
+
+          }else{
+            if(this.pageIndex == 1){
+              let data = JSON.parse(event.data);
+              this.orderLists = data;
+            }
+          }
         },
         false
       );
@@ -547,7 +566,6 @@ export default {
         page: this.pageIndex,
         limit: this.pageSize,
       };
-      console.log(params);
       searchBetting(params).then((res) => {
         if (res.code === 200) {
           this.orderLists = res.data.list;

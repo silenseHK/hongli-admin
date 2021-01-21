@@ -535,7 +535,6 @@ export default {
         page: this.pageIndex,
         limit: this.pageSize,
       };
-      console.log(params);
       withSearch(params).then((res) => {
         if (res.code === 200) {
           this.chargeLists = res.data.list
@@ -674,7 +673,6 @@ export default {
       const params = {
         ids: this.selectAll,
       };
-      console.log('params---->',params)
       allBy(params).then((res) => {
         if (res.code === 200) {
           this.$message.success("审核成功");
@@ -731,7 +729,6 @@ export default {
           id: id,
           message: value
         };
-        console.log(params);
         getCancel(params)
           .then((res) => {
             if (res.code === 200) {

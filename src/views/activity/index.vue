@@ -3,29 +3,36 @@
     <el-card>
       <div slot="header">
         <el-button
-          type="primary"
+            size="medium"
+            type="primary"
+            @click="handelAll"
+            :plain="plain0"
+        >All</el-button
+        >
+        <el-button
           size="medium"
+          type="primary"
           @click="handelOther"
           :plain="plain1"
           >Classic</el-button
         >
         <el-button
-          type="primary"
           size="medium"
+          type="primary"
           @click="handelGold"
           :plain="plain2"
           >Platinum</el-button
         >
         <el-button
-          type="success"
           size="medium"
+          type="primary"
           @click="handelJewelry"
           :plain="plain3"
           >Gold</el-button
         >
         <el-button
-          type="warning"
           size="medium"
+          type="primary"
           @click="handelSilver"
           :plain="plain4"
           >Silver</el-button
@@ -144,8 +151,9 @@
             <span :class="colors[scope.row.prize_number]">{{
               scope.row.prize_number
             }}</span>
-          </template></el-table-column
-        >
+          </template></el-table-column>
+
+        <el-table-column prop="game_name_p.name" label="游戏类型" width="170"></el-table-column>
 
         <el-table-column prop="prize_time" label="开奖时间" width="300">
           <template slot-scope="scope">
@@ -285,7 +293,8 @@ export default {
   data() {
     return {
       showPagination: true, //显示分页
-      plain1: false,
+      plain0: false,
+      plain1: true,
       plain2: true,
       plain3: true,
       plain4: true,
@@ -361,7 +370,7 @@ export default {
       pageSize: 10,
       pageIndex: 1,
       total: 0,
-      status: 4,
+      status: 0,
       detailData: {},
       pages: 1,
       es: {},
@@ -371,13 +380,13 @@ export default {
 
   created() {
     // this.setupStream();
-    this.handelOther()
+    this.handelAll()
   },
   activated() {
-    console.log("进入");
+    // console.log("进入");
   },
   deactivated() {
-    console.log("离开");
+    // console.log("离开");
   },
 
   // destroyed() {
@@ -493,17 +502,12 @@ export default {
           game_id: "=",
           status: "=",
         },
-        page: status == 0 ? 1 : this.pageIndex,
+        page: this.pageIndex,
         limit: this.pageSize,
       };
       periodSearch(params).then((res) => {
         if (res.code === 200) {
           this.activityList = res.data.list;
-          if(status == 0){
-            this.showPagination = false
-          }else{
-            this.showPagination = true
-          }
           this.total = res.data.total;
         }
       });
@@ -542,6 +546,7 @@ export default {
       // this.updateStream();
     },
     handelJewelry() {
+      this.plain0 = true;
       this.plain1 = true;
       this.plain2 = true;
       this.plain3 = false;
@@ -551,6 +556,7 @@ export default {
       // this.updateStream();
     },
     handelSilver() {
+      this.plain0 = true;
       this.plain1 = true;
       this.plain2 = true;
       this.plain3 = true;
@@ -560,12 +566,24 @@ export default {
       // this.updateStream();
     },
     handelOther() {
+      this.plain0 = true;
       this.plain1 = false;
       this.plain2 = true;
       this.plain3 = true;
       this.plain4 = true;
 
       this.status = 4;
+      this.getCharge();
+      // this.updateStream();
+    },
+    handelAll() {
+      this.plain0 = false;
+      this.plain1 = true;
+      this.plain2 = true;
+      this.plain3 = true;
+      this.plain4 = true;
+
+      this.status = 0;
       this.getCharge();
       // this.updateStream();
     },
