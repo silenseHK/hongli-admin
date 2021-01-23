@@ -17,7 +17,17 @@
                   clearable
               ></el-input>
             </el-form-item>
-
+            <el-form-item label="用户注册IP限制:" style="width: 30%">
+              <el-switch
+                  v-model="systemList.ipSwitch"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-value="1"
+                  inactive-value="0"
+                  active-text="开启"
+                  inactive-text="关闭">
+              </el-switch>
+            </el-form-item>
             <el-form-item>
               <el-button type="primary" size="small" @click="handelEdit"
               >修改</el-button
@@ -325,7 +335,8 @@ export default {
       id: "",
       whats_group_url: "",
       whats_service_url: "",
-      multiple: ""
+      multiple: "",
+      ipSwitch: "0"
     },
     service: {
       btn_1:{
@@ -421,6 +432,7 @@ export default {
           this.systemList.whats_group_url = res.data.whats_group_url;
           this.systemList.whats_service_url = res.data.whats_service_url;
           this.systemList.multiple = res.data.multiple;
+          this.systemList.ipSwitch = res.data.ip_switch.ip_switch;
         }
       });
     },
@@ -428,10 +440,12 @@ export default {
       const {
         id,
         multiple,
+        ipSwitch
       } = this.systemList;
       const params = {
         id,
-        multiple
+        multiple,
+        ipSwitch
       };
       systemEdit(params).then((res) => {
         if (res.code === 200) {

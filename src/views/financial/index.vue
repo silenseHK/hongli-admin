@@ -2,23 +2,22 @@
   <div>
     <el-card shadow="hover" :body-style="{ padding: '20px' }">
       <div slot="header">
-        <el-button type="success" size="medium" @click="pending" :plain="plain1"
-          >待审核</el-button
-        >
+        <el-button type="success" size="medium" @click="pending" :plain="plain1">待审核</el-button>
         <el-button
           type="warning"
           size="medium"
           @click="auditfailed"
-          :plain="plain2"
-          >审核未通过</el-button
-        >
+          :plain="plain2">审核未通过</el-button>
         <el-button
           type="primary"
           size="medium"
           @click="examination"
-          :plain="plain3"
-          >审核通过</el-button
-        >
+          :plain="plain3">审核通过</el-button>
+        <el-button
+          type="info"
+          size="medium"
+          @click="all"
+          :plain="plain3">全部</el-button>
       </div>
       <!-- card body -->
       <el-row :gutter="24">
@@ -165,12 +164,12 @@
         </el-table-column>
         <el-table-column
           key="4"
-          prop="phone"
+          prop="user.phone"
           label="会员手机号"
           width="130"
         >
         </el-table-column>
-        <el-table-column key="5" prop="user.id" label="会员ID" width="330">
+        <el-table-column key="5" prop="user.id" label="会员ID" width="130">
         </el-table-column>
         <el-table-column
           key="6"
@@ -298,9 +297,9 @@
         </el-table-column>
 
         <el-table-column
-          prop="order_no"
+          prop="pltf_order_no"
           key="23"
-          label="交易订单号"
+          label="第三方订单号"
           width="230"
         >
         </el-table-column>
@@ -323,6 +322,23 @@
         >
           <template slot-scope="scope">
             <span>{{ scope.row.loan_time | formatDate }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+            key="26"
+            label="状态"
+            width="150"
+            fixed="right"
+        >
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.status == 0" type="info" size="mini" effect="dark">待审核</el-tag>
+            <el-tag v-if="scope.row.status == 1 && scope.row.pay_status == 0" type="info" size="mini" effect="dark">待支付</el-tag>
+            <el-tag v-if="scope.row.status == 1 && scope.row.pay_status == 1" type="success" size="mini" effect="dark">已支付</el-tag>
+            <el-tag v-if="scope.row.status == 1 && scope.row.pay_status == 2" type="warning" size="mini" effect="dark">已失效</el-tag>
+            <el-tag v-if="scope.row.status == 1 && scope.row.pay_status == 3" type="danger" size="mini" effect="dark">订单异常</el-tag>
+            <el-tag v-if="scope.row.status == 2 && scope.row.pay_status == 0" size="mini" effect="dark">审核未通过</el-tag>
+            <el-tag v-if="scope.row.status == 2 && scope.row.pay_status == 3" size="mini" effect="dark">订单异常-已退还余额</el-tag>
+            <el-tag v-if="scope.row.status == 2 && scope.row.pay_status == 2" size="mini" effect="dark">已失效</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -490,12 +506,12 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getCharge();
+      this.handelSearch();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageIndex = val;
-      this.getCharge();
+      this.handelSearch();
       console.log(`当前页: ${val}`);
     },
     /**
@@ -566,7 +582,23 @@ export default {
         sourcehType: "",
         arriveTime: [],
         withdrawTime: []
-      },
+      }
+      this.getCharge();
+    },
+    all(){
+      this.plain1 = true;
+      this.plain2 = true;
+      this.plain3 = true;
+      this.plain4 = false;
+      this.status = -1;
+      this.withData = {
+        single: "",
+        transaction: "",
+        phone: "",
+        sourcehType: "",
+        arriveTime: [],
+        withdrawTime: []
+      }
       this.getCharge();
     },
     /**
@@ -585,7 +617,7 @@ export default {
         sourcehType: "",
         arriveTime: [],
         withdrawTime: []
-      },
+      }
       this.getCharge();
     },
 
@@ -605,7 +637,7 @@ export default {
         sourcehType: "",
         arriveTime: [],
         withdrawTime: []
-      },
+      }
       this.getCharge();
     },
     submitFail() {},

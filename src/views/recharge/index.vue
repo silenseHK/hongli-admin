@@ -15,6 +15,13 @@
           :plain="plain3"
           >充值失败</el-button
         >
+        <el-button
+            type="info"
+            size="medium"
+            @click="all"
+            :plain="plain4"
+        >全部</el-button
+        >
       </div>
       <el-row :gutter="24">
         <el-form :model="rechargeData" ref="stroleRef">
@@ -103,15 +110,15 @@
 
         <el-table-column prop="order_no" label="单号" width="230">
         </el-table-column>
-        <el-table-column prop="phone" label="会员手机号" width="230">
+        <el-table-column prop="phone" label="会员手机号" width="150">
         </el-table-column>
 
-        <el-table-column prop="nickname" label="会员名称" width="230">
-        </el-table-column>
-        <el-table-column prop="money" label="充值金额" width="100">
+<!--        <el-table-column prop="nickname" label="会员名称" width="230">-->
+<!--        </el-table-column>-->
+        <el-table-column prop="money" label="充值金额" width="120">
         </el-table-column>
 
-        <el-table-column prop="time" label="充值时间" width="230">
+        <el-table-column prop="time" label="充值时间" width="180">
           <template slot-scope="scope">
             <span>{{ scope.row.time | formatDate }}</span> </template
           >;
@@ -120,6 +127,14 @@
         <el-table-column prop="pay_company" label="支付公司" width="150">
         </el-table-column>
         <el-table-column prop="pay_type" label="支付方式" width="150">
+        </el-table-column>
+
+        <el-table-column prop="time" label="状态" width="230">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.status == 1" type="info" size="mini" effect="dark">等待支付</el-tag>
+            <el-tag v-if="scope.row.status == 2" type="success" size="mini" effect="dark">充值成功</el-tag>
+            <el-tag v-if="scope.row.status == 3" type="success" size="mini" effect="dark">充值失败</el-tag>
+          </template>
         </el-table-column>
 
         <el-table-column label="操作" align="center" min-width="100">
@@ -181,6 +196,7 @@ export default {
     plain1: false,
     plain2: true,
     plain3: true,
+    plain4: false,
     isUserInfo: false,
     pageSize: 10,
     pageIndex: 1,
@@ -217,12 +233,12 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getCharge();
+      this.handelSearch();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageIndex = val;
-      this.getCharge();
+      this.handelSearch();
       console.log(`当前页: ${val}`);
     },
     /**
@@ -278,6 +294,7 @@ export default {
       this.plain1 = false;
       this.plain2 = true;
       this.plain3 = true;
+      this.plain4 = true;
       this.status = 1;
       this.pageIndex = 1
       this.rechargeData = {
@@ -295,6 +312,7 @@ export default {
       this.plain1 = true;
       this.plain2 = false;
       this.plain3 = true;
+      this.plain4 = true;
       this.status = 2;
       this.pageIndex = 1
       this.rechargeData = {
@@ -312,7 +330,23 @@ export default {
       this.plain1 = true;
       this.plain2 = true;
       this.plain3 = false;
+      this.plain4 = true;
       this.status = 3;
+      this.pageIndex = 1
+      this.rechargeData = {
+        phone: "",
+        time: [],
+        single: "",
+        sourcehType: ""
+      }
+      this.getCharge();
+    },
+    all(){
+      this.plain1 = true;
+      this.plain2 = true;
+      this.plain3 = true;
+      this.plain4 = false;
+      this.status = 0;
       this.pageIndex = 1
       this.rechargeData = {
         phone: "",

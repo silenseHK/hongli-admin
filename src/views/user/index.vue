@@ -1,4 +1,5 @@
 <template>
+  <keep-alive>
   <div>
     <el-card>
       <div slot="header" class="clearfix">
@@ -593,6 +594,7 @@
       :show.sync="isBanDown"
     />
   </div>
+  </keep-alive>
 </template>
 
 <script>
@@ -791,13 +793,7 @@ export default {
   components: { AddBalance },
   // 请求资讯数据
   activated() {
-    userList(this.pagesize, this.currentPage).then((result) => {
-      this.total = result.data.total;
-      // console.log(result)
-      var _data = result.data.list;
-      this.userLists = winorLose(_data);
-      // console.log(winorLose(_data));
-    });
+
     // console.log(this.PermissionList)
   },
 
@@ -806,6 +802,14 @@ export default {
     this.getcustomer();
     //获取推荐人
     this.getReferrers();
+
+    userList(this.pagesize, this.currentPage).then((result) => {
+      this.total = result.data.total;
+      // console.log(result)
+      var _data = result.data.list;
+      this.userLists = winorLose(_data);
+      // console.log(winorLose(_data));
+    });
   },
   methods: {
     // clickHaddle(index){
