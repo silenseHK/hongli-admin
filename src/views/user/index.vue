@@ -1000,7 +1000,7 @@ export default {
      * 点击搜索按钮
      */
     searchForm() {
-      this.page = 2;
+      this.currentPage = 1;
       this.getSearchs();
     },
     /**
