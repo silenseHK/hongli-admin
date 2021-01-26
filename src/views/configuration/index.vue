@@ -28,6 +28,17 @@
                   inactive-text="关闭">
               </el-switch>
             </el-form-item>
+            <el-form-item label="提现首充检测:" style="width: 30%">
+              <el-switch
+                  v-model="systemList.isCheckRecharge"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-value="1"
+                  inactive-value="0"
+                  active-text="开启"
+                  inactive-text="关闭">
+              </el-switch>
+            </el-form-item>
             <el-form-item>
               <el-button type="primary" size="small" @click="handelEdit"
               >修改</el-button
@@ -336,7 +347,8 @@ export default {
       whats_group_url: "",
       whats_service_url: "",
       multiple: "",
-      ipSwitch: "0"
+      ipSwitch: "0",
+      isCheckRecharge: "0"
     },
     service: {
       btn_1:{
@@ -433,6 +445,7 @@ export default {
           this.systemList.whats_service_url = res.data.whats_service_url;
           this.systemList.multiple = res.data.multiple;
           this.systemList.ipSwitch = res.data.ip_switch.ip_switch;
+          this.systemList.isCheckRecharge = res.data.is_check_recharge.is_check_recharge;
         }
       });
     },
@@ -440,12 +453,14 @@ export default {
       const {
         id,
         multiple,
-        ipSwitch
+        ipSwitch,
+        isCheckRecharge
       } = this.systemList;
       const params = {
         id,
         multiple,
-        ipSwitch
+        ipSwitch,
+        isCheckRecharge
       };
       systemEdit(params).then((res) => {
         if (res.code === 200) {

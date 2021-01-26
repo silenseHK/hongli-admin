@@ -198,6 +198,15 @@
                 >
                   新增测试会员</el-button
                 >
+                <el-button
+                    size="small"
+                    @click="clearFakeBetting"
+                    type="warning"
+                    icon="el-icon-delete"
+                    class="ml30"
+                >
+                  清除虚拟流水</el-button
+                >
                 <!-- <el-button
                   size="small"
                   type="warning"
@@ -431,44 +440,15 @@
             v-model="memberData.virtualMoney"
           ></el-input>
         </el-form-item>
-        <el-form-item label="一级推荐人" prop="one_recommend_id">
-          <el-select
-            v-model="memberData.one_recommend_id"
-            value-key=""
-            size="medium"
-            placeholder="一级推荐人"
-            clearable
-            style="width: 320px"
-            filterable
-          >
-            <el-option
-              v-for="item in referrersList"
-              :key="item.id"
-              :label="item.nickname"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
+
+        <el-form-item label="推荐人ID" prop="one_recommend_id">
+          <el-input
+              size="medium"
+              placeholder="请输入推荐人id"
+              v-model="memberData.two_recommend_id"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="二级推荐人" prop="two_recommend_id">
-          <el-select
-            v-model="memberData.two_recommend_id"
-            value-key=""
-            size="medium"
-            placeholder="二级推荐人"
-            style="width: 320px"
-            clearable
-            filterable
-          >
-            <el-option
-              v-for="item in referrersList"
-              :key="item.id"
-              :label="item.nickname"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
+
         <el-form-item label="登录状态">
           <el-radio-group v-model="memberData.is_login">
             <el-radio :label="item.id" :key="item.id" v-for="item in isLogin">{{
@@ -610,6 +590,8 @@ import {
   userStatus,
   getReferrer,
   requestGify,
+  clearFakeBetting,
+  searchInviteUser
 } from "@/api/user";
 import { objDele, winorLose } from "@/utils/validate";
 import AddBalance from "./components/AddBalance";
@@ -737,7 +719,6 @@ export default {
         virtualMoney: "",
         nickname: "",
         remarks: "",
-        one_recommend_id: "",
         two_recommend_id: "",
         is_login: 1,
         is_transaction: 1,
@@ -788,6 +769,8 @@ export default {
         abbreviation: "",
         id: "",
       },
+      loading: false,
+      inviteUserList:[],
     };
   },
   components: { AddBalance },
@@ -819,7 +802,6 @@ export default {
     /**
      * 关闭弹框
      */
-
     loadData() {
       userList(this.pagesize, this.currentPage).then((result) => {
         // console.log(result)
@@ -1030,6 +1012,26 @@ export default {
       this.status = 0;
     },
     /**
+     * 清流虚拟打码量
+     */
+    clearFakeBetting(){
+      this.$confirm('确定清理所有用户的虚拟流水?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        clearFakeBetting().then((res)=>{
+          if(res.code == 200){
+            this.$message.success('操作成功');
+            this.loadData();
+          }else{
+            this.$message.error(res.msg);
+          }
+        })
+
+      }).catch(() => {});
+    },
+    /**
      * 提交新增修改按钮
      */
     submitUser() {
@@ -1044,9 +1046,7 @@ export default {
             is_transaction,
             is_recharge,
             is_withdrawal,
-            one_recommend_id,
-            two_recommend_id,
-            virtualMoney
+            two_recommend_id
           } = this.memberData;
           if (this.status === 0) {
             const params = {
@@ -1059,7 +1059,6 @@ export default {
               is_transaction,
               is_recharge,
               is_withdrawal,
-              one_recommend_id,
               two_recommend_id,
             };
             addUsers(params).then((res) => {
@@ -1103,7 +1102,7 @@ export default {
             userEdit(paramsEidt).then((res) => {
               this.isUserOpen = false;
               if (res.code === 200) {
-                this.loadData();
+                this.getSearchs();
                 this.$message.success("修改成功");
               } else {
                 this.$message.error("修改失败");

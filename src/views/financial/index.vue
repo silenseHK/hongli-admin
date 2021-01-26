@@ -60,6 +60,27 @@
               </el-select>
             </el-form-item>
           </el-col>
+
+          <el-col v-show="status==1" :span="3" :xl="3" :lg="6" :md="24" :sm="24" :xs="24">
+            <el-form-item prop="payStatus">
+              <el-select
+                  v-model="withData.payStatus"
+                  filterable
+                  size="small"
+                  :clearable="true"
+                  placeholder="支付状态"
+              >
+                <el-option
+                    v-for="item in payStatusList"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
           <el-col
             :span="7"
             :offset="0"
@@ -85,6 +106,7 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
+
           <el-col
             :span="6"
             :offset="0"
@@ -109,6 +131,7 @@
               >
               </el-date-picker>
             </el-form-item>
+
           </el-col>
         </el-form>
       </el-row>
@@ -122,7 +145,7 @@
           :sm="24"
           :xs="24"
         >
-          <el-button type="primary" size="medium" @click="handelSearch"
+          <el-button type="primary" size="medium" @click="doSearch"
             >搜索</el-button
           >
           <el-button type="success" size="medium" @click="handelReset"
@@ -342,7 +365,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          key="26"
+          key="29"
           label="可提现"
           width="70"
           fixed="right"
@@ -448,6 +471,7 @@ export default {
       sourcehType: "",
       arriveTime: [],
       withdrawTime: [],
+      payStatus: -1,
       //注册来源
     },
     sourceList: [
@@ -458,6 +482,24 @@ export default {
       {
         id: 1,
         label: "网站测试会员",
+      },
+    ],
+    payStatusList: [
+      {
+        id: 0,
+        label: "未支付",
+      },
+      {
+        id: 1,
+        label: "已支付",
+      },
+      {
+        id: 2,
+        label: "已失效",
+      },
+      {
+        id: 3,
+        label: "订单异常",
       },
     ],
     message: "",
@@ -514,6 +556,10 @@ export default {
       this.handelSearch();
       console.log(`当前页: ${val}`);
     },
+    doSearch(){
+      this.pageIndex = 1;
+      this.handelSearch();
+    },
     /**
      * 搜索按钮
      */
@@ -524,6 +570,7 @@ export default {
         arriveTime,
         withdrawTime,
         sourcehType,
+        payStatus
       } = this.withData;
       const { status } = this;
 
@@ -536,6 +583,10 @@ export default {
         reg_source_id: sourcehType,
       };
 
+      if(status == 1){
+        searchData.pay_status = payStatus
+      }
+
       const paramss = objDele(searchData);
 
       const params = {
@@ -547,6 +598,7 @@ export default {
           loan_time: "between",
           status: "=",
           reg_source_id: "=",
+          pay_status: '='
         },
         page: this.pageIndex,
         limit: this.pageSize,
@@ -590,6 +642,7 @@ export default {
       this.plain2 = true;
       this.plain3 = true;
       this.plain4 = false;
+      this.pageIndex = 1
       this.status = -1;
       this.withData = {
         single: "",
@@ -768,7 +821,7 @@ export default {
             } else {
               this.$message.error(res.msg);
             }
-            this.getCharge();
+            this.handelSearch();
           })
             .catch((error) => console.error(error));
           }).catch(() => {});

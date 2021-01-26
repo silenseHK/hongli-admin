@@ -209,3 +209,13 @@ export const requestUserDetails = (params) => {
   const url = "/user/logs"
   return $axios.post(url, params)
 }
+
+export const clearFakeBetting = () => {
+  const url = "/user/clearFakeBetting"
+  return $axios.post(url,{})
+}
+
+export const searchInviteUser = (params) => {
+  const url = "/user/searchUserByPhoneLike"
+  return $axios.post(url, params)
+}
