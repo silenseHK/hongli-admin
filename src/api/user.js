@@ -210,6 +210,11 @@ export const requestUserDetails = (params) => {
   return $axios.post(url, params)
 }
 
+export const requestLogType = () => {
+  const url = "/user/logType"
+  return $axios.get(url)
+}
+
 export const clearFakeBetting = () => {
   const url = "/user/clearFakeBetting"
   return $axios.post(url,{})

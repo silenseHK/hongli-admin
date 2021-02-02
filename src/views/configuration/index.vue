@@ -268,6 +268,82 @@
             </el-tab-pane>
           </el-tabs>
         </el-tab-pane>
+        <el-tab-pane label="充值返利配置" name="six">
+          <el-form label-width="160px" :model="recharge_rebate" :rules="rechargeRebateRules" ref="recharge_rebate">
+            <el-form-item label="返利百分比:" style="width: 30%" prop="percent">
+              <el-input
+                  v-model="recharge_rebate.percent"
+                  placeholder=""
+                  size="small"
+                  clearable
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item label="返利最低充值金额:" style="width: 30%" prop="min_recharge">
+              <el-input
+                  v-model="recharge_rebate.min_recharge"
+                  placeholder=""
+                  size="small"
+                  clearable
+              ></el-input>
+              <el-tag type="warning">填写0则无最低限制</el-tag>
+            </el-form-item>
+
+            <el-form-item label="最高返利金额:" style="width: 30%" prop="max_rebate">
+              <el-input
+                  v-model="recharge_rebate.max_rebate"
+                  placeholder=""
+                  size="small"
+                  clearable
+              ></el-input>
+              <el-tag type="warning">填写0则无最高限制</el-tag>
+            </el-form-item>
+
+            <el-form-item label="开启状态" style="width: 30%" prop="status">
+              <el-switch
+                  v-model="recharge_rebate.status"
+                  active-text="开启"
+                  inactive-text="关闭"
+                  :active-value="1"
+                  :inactive-value="0">
+              </el-switch>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" size="small" @click="handleEditRechargeRebate"
+              >修改</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="用户注册返利配置" name="seven">
+          <el-form label-width="160px" :model="register" :rules="registerRules" ref="register">
+            <el-form-item label="返利金额:" style="width: 30%" prop="rebate">
+              <el-input
+                  v-model="register.rebate"
+                  placeholder=""
+                  size="small"
+                  clearable
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item label="开启状态" style="width: 30%" prop="status">
+              <el-switch
+                  v-model="register.status"
+                  active-text="开启"
+                  inactive-text="关闭"
+                  :active-value="1"
+                  :inactive-value="0">
+              </el-switch>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" size="small" @click="handleEditRegister"
+              >修改</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
 
@@ -287,7 +363,7 @@
 </template>
 
 <script>
-import { systemAll, systemEdit, serviceEdit, serviceAll, crispEdit, crispAll, appAll, apppEdit, aboutUsAll, aboutUsEdit } from "@/api/system";
+import { systemAll, systemEdit, serviceEdit, serviceAll, crispEdit, crispAll, appAll, apppEdit, aboutUsAll, aboutUsEdit, rechargeRebateAll, rechargeRebateEdit, registerEdit, registerAll } from "@/api/system";
 import { quillEditor } from "vue-quill-editor";
 import phpUrl from "@/utils/baseUrl";
 import store from "@/store"
@@ -389,7 +465,41 @@ export default {
         { required: true, message: '请选择开启状态', trigger: 'blur' },
       ]
     },
-    activeName: 'five',
+    recharge_rebate: {
+      status: 0,
+      percent: 0.00,
+      max_rebate: 0,
+      min_recharge: 0
+    },
+    rechargeRebateRules: {
+      percent: [
+        { required: true, message: '请输入返利百分比', trigger: 'blur' },
+      ],
+      max_rebate: [
+        { required: true, message: '请输入最大返利金额', trigger: 'blur' },
+      ],
+      min_recharge: [
+        { required: true, message: '请输入最小充值金额', trigger: 'blur' },
+      ],
+      status: [
+        { required: true, message: '请选择开启状态', trigger: 'blur' },
+      ]
+    },
+
+    register: {
+      rebate: 0,
+      status: 0,
+    },
+    registerRules: {
+      rebate: [
+        { required: true, message: '请输入返利金额', trigger: 'blur' },
+      ],
+      status: [
+        { required: true, message: '请选择开启状态', trigger: 'blur' },
+      ]
+    },
+
+    activeName: 'one',
 
     editorOption: {
       modules: {
@@ -431,6 +541,12 @@ export default {
           break;
         case 'five':
           this.getAboutUs();
+          break;
+        case 'six':
+          this.getRechargeRebate();
+          break;
+        case 'seven':
+          this.getRegister();
           break;
       }
     },
@@ -531,6 +647,38 @@ export default {
       });
     },
 
+    handleEditRechargeRebate(){
+      this.$refs['recharge_rebate'].validate((valid) => {
+        if (valid) {
+          let {percent, status, min_recharge, max_rebate} = this.recharge_rebate
+          rechargeRebateEdit({percent, status, min_recharge, max_rebate}).then((res) => {
+            if (res.code === 200) {
+              this.$message.success("修改成功");
+              this.handleClick();
+            } else {
+              this.$message.error(res.msg);
+            }
+          });
+        }
+      });
+    },
+
+    handleEditRegister(){
+      this.$refs['register'].validate((valid) => {
+        if (valid) {
+          let {rebate, status} = this.register
+          registerEdit({rebate, status}).then((res) => {
+            if (res.code === 200) {
+              this.$message.success("修改成功");
+              this.handleClick();
+            } else {
+              this.$message.error(res.msg);
+            }
+          });
+        }
+      });
+    },
+
     getService(){
       serviceAll().then((res)=>{
         if(res.code === 200){
@@ -588,6 +736,26 @@ export default {
           }
         }else{
           this.$message.error(res.msg);
+        }
+      })
+    },
+
+    getRechargeRebate(){
+      rechargeRebateAll().then((res)=>{
+        if(res.code == 200){
+          this.recharge_rebate = res.data;
+        }else{
+          this.$message.error(res.msg)
+        }
+      })
+    },
+
+    getRegister(){
+      registerAll().then((res)=>{
+        if(res.code == 200){
+          this.register = res.data;
+        }else{
+          this.$message.error(res.msg)
         }
       })
     },

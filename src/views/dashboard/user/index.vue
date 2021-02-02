@@ -463,6 +463,50 @@
             </div>
           </div>
         </el-col>
+        <el-col :span="6" v-if='roleType==1'>
+          <div class="cardItem">
+            <div class="cardItem_txt">
+              <div class="count-num-box">
+                <blockquote v-if='homeList.rechargeRebate !=null'>
+                  <count-to
+                      class="cardItem_p0 color-green2"
+                      :startVal="startVal"
+                      :endVal="Number(homeList.rechargeRebate)"
+                      :duration="2000"
+                      :decimals='decimals'
+                  ></count-to>
+                </blockquote>
+              </div>
+              <p class="cardItem_p1">充值返彩金</p>
+            </div>
+            <div class="cardItem_icon">
+              <i class="el-icon-money color-green2"></i>
+            </div>
+          </div>
+        </el-col>
+
+        <el-col :span="6" v-if='roleType==1'>
+          <div class="cardItem">
+            <div class="cardItem_txt">
+              <div class="count-num-box">
+                <blockquote v-if='homeList.registerRebate !=null'>
+                  <count-to
+                      class="cardItem_p0 color-green2"
+                      :startVal="startVal"
+                      :endVal="Number(homeList.registerRebate)"
+                      :duration="2000"
+                      :decimals='decimals'
+                  ></count-to>
+                </blockquote>
+              </div>
+              <p class="cardItem_p1">注册返彩金</p>
+            </div>
+            <div class="cardItem_icon">
+              <i class="el-icon-money color-green2"></i>
+            </div>
+          </div>
+        </el-col>
+
       </div>
       <div class="statistics color-red">订单汇总</div>
       <div class="infoCrads">
@@ -702,6 +746,8 @@ export default {
       upperSeparation: null,
       downSeparation: null,
       onlineNumber: null,
+      rechargeRebate: null,
+      registerRebate: null,
     },
     sourcehType: "",
     //注册来源
@@ -749,7 +795,9 @@ export default {
       totalProfitLoss: null,
       backstageGiftMoney: null,
       upperSeparation: null,
-      downSeparation: null
+      downSeparation: null,
+      rechargeRebate: null,
+      registerRebate: null,
     }
     this.time = []
     if(this.roleType){
@@ -790,7 +838,8 @@ export default {
     },
     searchHome() {
       if(this.roleType == '1'){
-        const { time, sourcehType } = this;
+        let { time, sourcehType } = this;
+        if(!time)time = [];
         const times = time.map((item) => item / 1000);
 
         const paramss = {
@@ -835,7 +884,9 @@ export default {
             bettingNumber: order_data.order_num,
             bettingMoney: order_data.order_money,
             userProfit: order_data.order_win_money,
-            service_money: order_data.service_money
+            service_money: order_data.service_money,
+            rechargeRebate: money_data.rechargeRebate,
+            registerRebate: money_data.registerRebate,
           };
           this.homeList = datas;
         }
@@ -865,6 +916,8 @@ export default {
             ordinaryFirstChargeNumber,
             agentFirstChargeNumber,
             rechargeMoney,
+            rechargeRebate,
+            registerRebate,
             withdrawalMoney,
             toBeWithdrawalMoney,
             subCommission,
@@ -910,7 +963,9 @@ export default {
             backstageGiftMoney: Number(backstageGiftMoney),
             upperSeparation: Number(upperSeparation),
             downSeparation: Number(downSeparation),
-            onlineNumber: Number(onlineNum)
+            onlineNumber: Number(onlineNum),
+            rechargeRebate: Number(rechargeRebate),
+            registerRebate: Number(registerRebate),
           };
           this.homeList = datas;
         }

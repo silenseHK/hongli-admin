@@ -5,6 +5,18 @@
       <el-page-header @back="goBack = $router.go(-1)" content="资金详情页">
       </el-page-header>
 
+      <div style="margin-top: 10px;">
+        <el-select v-model="type" filterable clearable placeholder="请选择">
+          <el-option
+              v-for="item in logType"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+          </el-option>
+        </el-select>
+        <el-button style="margin-left:10px;" icon="el-icon-search" circle @click="search"></el-button>
+      </div>
+
       <el-table
         :data="userDetailList"
         style="width: 100%; margin-top: 30px"
@@ -23,67 +35,7 @@
               type="success"
               size="mini"
               effect="dark"
-              v-if="scope.row.type === 1"
-              >下注
-            </el-tag>
-            <el-tag
-              type="success"
-              size="mini"
-              effect="dark"
-              v-else-if="scope.row.type === 2"
-              >充值
-            </el-tag>
-            <el-tag
-              type="success"
-              size="mini"
-              effect="dark"
-              v-else-if="scope.row.type === 3"
-              >提现
-            </el-tag>
-            <el-tag
-              type="success"
-              size="mini"
-              effect="dark"
-              v-else-if="scope.row.type === 4"
-              >签到礼金
-            </el-tag>
-            <el-tag
-              type="success"
-              size="mini"
-              effect="dark"
-              v-else-if="scope.row.type === 5"
-              >红包礼金
-            </el-tag>
-            <el-tag
-              type="success"
-              size="mini"
-              effect="dark"
-              v-else-if="scope.row.type === 6"
-              >投注获胜
-            </el-tag>
-            <el-tag
-              type="success"
-              size="mini"
-              effect="dark"
-              v-else-if="scope.row.type === 7"
-              >签到领回扣
-            </el-tag>
-            <el-tag
-              type="success"
-              size="mini"
-              effect="dark"
-              v-else-if="scope.row.type === 8"
-              >后台赠送礼金
-            </el-tag>
-            <el-tag
-              type="success"
-              size="mini"
-              effect="dark"
-              v-else-if="scope.row.type === 9"
-              >手动上分
-            </el-tag>
-            <el-tag type="success" size="mini" effect="dark" v-else
-              >手动下分
+              >{{scope.row.type_map.name}}
             </el-tag>
           </template>
         </el-table-column>
@@ -126,7 +78,7 @@
 </template>
 
 <script>
-import { requestUserDetails } from "@/api/user";
+import { requestUserDetails, requestLogType } from "@/api/user";
 export default {
   name: "BanceTable",
   data: () => ({
@@ -135,13 +87,22 @@ export default {
     pageSize: 10,
     total: 0,
     userDetailList: [],
+
+    logType: [],
+
+    type: ""
   }),
   activated() {
     this.id = this.$route.query.id;
     //获取数据
     this.getUserDetail();
+    this.getLogType();
   },
   methods: {
+    search(){
+      this.currentPage = 1;
+      this.getUserDetail();
+    },
     handleSizeChange(val) {
       this.pageSize = val;
       this.getUserDetail();
@@ -158,6 +119,7 @@ export default {
         id: this.id,
         page: this.currentPage,
         limit: this.pageSize,
+        type: this.type?this.type:0
       };
       requestUserDetails(parmas).then((res) => {
         if (res.code === 200) {
@@ -166,6 +128,15 @@ export default {
         }
       });
     },
+    getLogType(){
+      requestLogType().then((res)=>{
+        if(res.code == 200){
+          this.logType = res.data;
+        }else{
+          this.$message.error(res.msg)
+        }
+      })
+    }
   },
 };
 </script>

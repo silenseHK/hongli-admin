@@ -204,3 +204,23 @@ export const aboutUsEdit = (params) => {
   const url = "/system/aboutUs"
   return $axios.post(url, params)
 }
+
+export const rechargeRebateAll = () => {
+  const url = "/system/rechargeRebate"
+  return $axios.get(url)
+}
+
+export const rechargeRebateEdit = (params) => {
+  const url = "/system/rechargeRebate"
+  return $axios.post(url, params)
+}
+
+export const registerAll = () => {
+  const url = "/system/register"
+  return $axios.get(url)
+}
+
+export const registerEdit = (params) => {
+  const url = "/system/register"
+  return $axios.post(url, params)
+}

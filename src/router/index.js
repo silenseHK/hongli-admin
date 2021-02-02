@@ -497,6 +497,12 @@ export const asyncRoutes = [
     },
     children: [
       {
+        path: "channel-list",
+        name: "/channel/list",
+        component: () => import("@/views/channel"),
+        meta: { title: "通道统计", icon: "el-icon-notebook-2" },
+      },
+      {
         path: "recharge-list",
         name: "/recharge/list",
         component: () => import("@/views/recharge"),

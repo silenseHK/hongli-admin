@@ -393,7 +393,7 @@
           align="center"
           key="28"
           fixed="right"
-          min-width="100"
+          min-width="130"
         >
           <template slot-scope="scope">
             <el-button
@@ -409,6 +409,14 @@
               size="mini"
               @click="handleCancel(scope.row)"
               >取消</el-button
+            >
+            <el-button
+                style="margin-top:4px;"
+                v-if="scope.row.status === 1 && scope.row.pay_status === 3"
+                type="danger"
+                size="mini"
+                @click="handleRetry(scope.row)"
+            >重试代付</el-button
             >
           </template>
         </el-table-column>
@@ -453,6 +461,7 @@ import {
   allBy,
   allFila,
   getCancel,
+  retry
 } from "@/api/financial";
 import { objDele } from "@/utils/validate";
 export default {
@@ -825,6 +834,24 @@ export default {
           })
             .catch((error) => console.error(error));
           }).catch(() => {});
+    },
+
+    handleRetry(item){
+      const { id } = item;
+      this.$confirm('确定重新提交代付?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        retry({id}).then((res)=>{
+          if(res.code == 200){
+            this.$message.success(res.msg)
+            this.handelSearch();
+          }else{
+            this.$message.error(res.msg)
+          }
+        })
+      }).catch(() => {});
     },
   },
 };

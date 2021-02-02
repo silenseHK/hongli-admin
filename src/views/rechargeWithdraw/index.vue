@@ -62,6 +62,29 @@
                     clearable
                   ></el-input>
                 </el-form-item>
+
+                <el-form-item label="公钥：" class="w200">
+                  <el-input
+                      type="textarea"
+                      :rows="2"
+                      v-model="formData.publicKey"
+                      placeholder="请输入公钥："
+                      size="small"
+                      clearable
+                  ></el-input>
+                </el-form-item>
+
+                <el-form-item label="私钥：" class="w200">
+                  <el-input
+                      type="textarea"
+                      :rows="2"
+                      v-model="formData.privateKey"
+                      placeholder="请输入私钥："
+                      size="small"
+                      clearable
+                  ></el-input>
+                </el-form-item>
+
                 <el-form-item label="提现开始星期：" class="w200" v-if='currentNav==1'>
                   <el-select v-model="formData.selectWeekStart" clearable placeholder="请选择开始星期">
                     <el-option
@@ -208,7 +231,9 @@ export default {
       selectWeekStart: '',
       selectWeekEnd: '',
       selectTime: '',
-      mySwitch: null
+      mySwitch: null,
+      privateKey: "",
+      publicKey: ""
     },
   }),
   activated() {
@@ -225,12 +250,14 @@ export default {
         selectWeekStart: '',
         selectWeekEnd: '',
         selectTime: '',
-        mySwitch: null
+        mySwitch: null,
+        privateKey: "",
+        publicKey: ""
       }
     },
     // 点击提交
     mySumbit(){
-      let {min,max,businessNum,secretKey,mySwitch,selectWeekStart,selectWeekEnd,selectTime} = this.formData
+      let {min,max,businessNum,secretKey,mySwitch,selectWeekStart,selectWeekEnd,selectTime, privateKey, publicKey} = this.formData
       let tagsLen = this.tags.length
       let index = null
       let index2 = null
@@ -305,6 +332,8 @@ export default {
             btn,
             merchant_id: businessNum,
             secret_key: secretKey,
+            public_key: publicKey,
+            private_key: privateKey,
             status: mySwitch ? 1 : 2
           }
           if(this.currentNav == 1){
@@ -342,7 +371,9 @@ export default {
           selectWeekStart: '',
           selectWeekEnd: '',
           selectTime: [],
-          mySwitch: false
+          mySwitch: false,
+          publicKey: "",
+          privateKey: ""
         }
         this.rechargeType = []
         this.currentChoice = ''
@@ -364,7 +395,9 @@ export default {
         mySwitch: res[type].status == 1 ? true : false,
         selectWeekStart: (this.currentNav == 1) ? res[type].start_week : '',
         selectWeekEnd: (this.currentNav == 1) ? res[type].end_week : '',
-        selectTime: (this.currentNav == 1) ? res[type].during_time.split(' - ') : ''
+        selectTime: (this.currentNav == 1) ? res[type].during_time.split(' - ') : '',
+        publicKey: res[type].public_key,
+        privateKey: res[type].private_key,
       }
       //渲染标签数
       if(res[type].btn.length == 0){

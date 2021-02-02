@@ -161,3 +161,8 @@ export const getCancel = (params) => {
   const url = "/withdrawal/cancel"
   return $axios.post(url, params)
 }
+
+export const retry = (params) => {
+  const url = "/withdrawal/retry"
+  return $axios.post(url, params)
+}
