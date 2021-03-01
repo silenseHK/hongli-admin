@@ -280,6 +280,21 @@ export const asyncRoutes = [
     ],
   },
   {
+    path: "/user/team",
+    component: Layout,
+    hidden: true,
+    name: "/user/findAll",
+    rediret: "/user/team",
+    children: [
+      {
+        path: "/user/team",
+        name: "/user/findAll",
+        component: () => import("@/views/user/components/Team"),
+        meta: { title: "团队明细", icon: "el-icon-s-grid" },
+      },
+    ],
+  },
+  {
     path: "/staffUser/details",
     component: () => import("@/views/staffUser/components/BalanceTable"),
     hidden: true,
@@ -594,6 +609,12 @@ export const asyncRoutes = [
         name: "/order/lists",
         component: () => import("@/views/orderList"),
         meta: { title: "订单列表", icon: "el-icon-s-order" },
+      },
+      {
+        path: "betting-notice-list",
+        name: "/bettingNotice/lists",
+        component: () => import("@/views/bettingNoticeList"),
+        meta: { title: "下注提醒", icon: "el-icon-s-flag" },
       },
     ],
   },

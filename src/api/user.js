@@ -224,3 +224,13 @@ export const searchInviteUser = (params) => {
   const url = "/user/searchUserByPhoneLike"
   return $axios.post(url, params)
 }
+
+export const teamUpList = (page, size, user_id) => {
+  const url = `/user/groupUpList?page=${page}&size=${size}&user_id=${user_id}`
+  return $axios.get(url)
+}
+
+export const teamDownList = (page, size, user_id) => {
+  const url = `/user/groupDownList?page=${page}&size=${size}&user_id=${user_id}`
+  return $axios.get(url)
+}

@@ -89,8 +89,12 @@
       <!-- card body -->
       <el-table :data="accountList" border stripe>
         <el-table-column prop="id" width="80" label="#"> </el-table-column>
-        <el-table-column prop="nickname" width="360" label="账号">
+        <el-table-column width="170" label="后台登录账号">
+          <template slot-scope="scope">
+            {{scope.row.admin ? scope.row.admin.username : '未绑定管理员'}}
+          </template>
         </el-table-column>
+        <el-table-column prop="nickname" width="170" label="昵称"></el-table-column>
         <el-table-column prop="phone" width="170" label="手机号">
         </el-table-column>
         <!-- <el-table-column prop="" width="170" label="角色"> </el-table-column>

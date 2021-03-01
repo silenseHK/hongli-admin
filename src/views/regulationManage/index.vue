@@ -34,6 +34,11 @@
           :key='index'
           >{{item.title}}</el-radio>
         </el-form-item>
+
+        <el-form-item label="封盘时间(秒)：" class="w500">
+          <el-input-number size="mini" v-model="systemList.lockTime" :min="10" :max="300" label="封盘时间"></el-input-number>
+        </el-form-item>
+
         <el-form-item style="margin-left: 20px">
           <el-button type="primary" size="small" @click="handelEdit"
             >修改</el-button
@@ -57,7 +62,8 @@ export default {
     systemList: {
       dateKill: "",
       oneKill: "",
-      myRadio: ''
+      myRadio: '',
+      lockTime: 10
     }
   }),
   activated() {
@@ -73,7 +79,8 @@ export default {
       this.systemList = {
         dateKill: "",
         oneKill: "",
-        myRadio: ''
+        myRadio: '',
+        lockTime: 10
       }
     },
     //数据回填
@@ -95,7 +102,8 @@ export default {
           this.systemList = {
             dateKill: showData.date_kill,
             oneKill: showData.one_kill,
-            myRadio:  showData.open_type.value
+            myRadio:  showData.open_type.value,
+            lockTime: showData.lock_time,
           }
         }
       })
@@ -108,7 +116,8 @@ export default {
           this.systemList = {
             dateKill: gameData.date_kill,
             oneKill: gameData.one_kill,
-            myRadio: gameData.open_type.value
+            myRadio: gameData.open_type.value,
+            lockTime: gameData.lock_time,
           }
         }
       })
@@ -116,12 +125,13 @@ export default {
     //点击修改
     handelEdit(){
       canClickFn(() => {
-        let {dateKill,oneKill,myRadio} = this.systemList
+        let {dateKill,oneKill,myRadio,lockTime} = this.systemList
         modifyRegulation({
           id: this.currentNav,
           open_type: myRadio,
           date_kill: dateKill,
-          one_kill: oneKill
+          one_kill: oneKill,
+          lock_time: lockTime
         }).then(res => {
           if(res.code == 200){
             this.$message({

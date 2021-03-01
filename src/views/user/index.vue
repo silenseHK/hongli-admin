@@ -291,43 +291,44 @@
         </el-table-column>
         <el-table-column prop="is_login" label="账号在线状态" width="140">
           <template slot-scope="scope">
-            <el-tag type="success" size="mini" effect="dark">{{
-                scope.row.online_status === 0 ? "下线" : "在线"
-              }}</el-tag>
+            <el-tag type="info" size="mini" effect="dark" v-if="scope.row.online_status === 0">下线</el-tag>
+            <el-tag type="success" size="mini" effect="dark" v-if="scope.row.online_status === 1">在线</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="is_login" label="账号登录状态" width="140">
           <template slot-scope="scope">
-            <el-tag type="success" size="mini" effect="dark">{{
-              scope.row.status === 0 ? "启用" : "禁用"
-            }}</el-tag>
+            <el-tag type="success" size="mini" effect="dark" v-if="scope.row.status === 0">允许</el-tag>
+            <el-tag type="info" size="mini" effect="dark" v-if="scope.row.status === 1">禁止</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="is_transaction" label="账号交易状态" width="140">
           <template slot-scope="scope">
-            <el-tag type="success" size="mini" effect="dark">{{
-              scope.row.is_transaction === 1 ? "允许" : "拒接"
-            }}</el-tag>
+            <el-tag type="success" size="mini" effect="dark" v-if="scope.row.is_transaction === 1">允许</el-tag>
+            <el-tag type="info" size="mini" effect="dark" v-if="scope.row.is_transaction === 0">拒接</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="is_recharge" label="可充值" width="100">
           <template slot-scope="scope">
-            <el-tag type="success" size="mini" effect="dark">{{
-              scope.row.is_recharge === 1 ? "是" : "否"
-            }}</el-tag>
+            <el-tag type="success" size="mini" effect="dark" v-if="scope.row.is_recharge === 1">是</el-tag>
+            <el-tag type="info" size="mini" effect="dark" v-if="scope.row.is_recharge === 0">否</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="is_withdrawal" label="可提现" width="100">
           <template slot-scope="scope">
-            <el-tag type="success" size="mini" effect="dark">{{
-              scope.row.is_withdrawal === 1 ? "是" : "否"
-            }}</el-tag>
+            <el-tag type="success" size="mini" effect="dark" v-if="scope.row.is_withdrawal === 1">是</el-tag>
+            <el-tag type="info" size="mini" effect="dark" v-if="scope.row.is_withdrawal === 0">否</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="is_betting_notice" label="下注提醒" width="100">
+          <template slot-scope="scope">
+            <el-tag type="success" size="mini" effect="dark" v-if="scope.row.is_betting_notice === 1">是</el-tag>
+            <el-tag type="info" size="mini" effect="dark" v-if="scope.row.is_betting_notice === 0">否</el-tag>
           </template>
         </el-table-column>
         <el-table-column
           label="操作"
           align="center"
-          :min-width="550"
+          :min-width="620"
           fixed="right"
         >
           <template slot-scope="scope">
@@ -365,6 +366,12 @@
               type="primary"
               @click="fundsDetails(scope.row)"
               >资金明细</el-button
+            >
+            <el-button
+                size="mini"
+                type="primary"
+                @click="teamDetails(scope.row)"
+            >团队明细</el-button
             >
             <!-- </blockquote> -->
           </template>
@@ -475,6 +482,13 @@
             <el-radio :label="item.id" :key="item.id" v-for="item in isLogin">{{
               item.label
             }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="下注提醒">
+          <el-radio-group v-model="memberData.is_betting_notice">
+            <el-radio :label="item.id" :key="item.id" v-for="item in isBettingNotice">{{
+                item.label
+              }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注">
@@ -665,6 +679,16 @@ export default {
           label: "允许",
         },
       ],
+      isBettingNotice: [
+        {
+          id: 0,
+          label: "否",
+        },
+        {
+          id: 1,
+          label: "是",
+        },
+      ],
 
       searchType: "",
       pickerOptions: {
@@ -724,6 +748,7 @@ export default {
         is_transaction: 1,
         is_recharge: 1,
         is_withdrawal: 1,
+        is_betting_notice: 0,
       },
       page: 1,
       //批量修改
@@ -841,6 +866,7 @@ export default {
       this.memberData.is_transaction = rowDate.is_transaction;
       this.memberData.is_recharge = rowDate.is_recharge;
       this.memberData.is_withdrawal = rowDate.is_withdrawal;
+      this.memberData.is_betting_notice = rowDate.is_betting_notice;
       this.memberData.one_recommend_id = rowDate.one_recommend_id;
       this.memberData.two_recommend_id = rowDate.two_recommend_id;
       // console.log(rowDate);
@@ -1046,6 +1072,7 @@ export default {
             is_transaction,
             is_recharge,
             is_withdrawal,
+            is_betting_notice,
             two_recommend_id
           } = this.memberData;
           if (this.status === 0) {
@@ -1059,6 +1086,7 @@ export default {
               is_transaction,
               is_recharge,
               is_withdrawal,
+              is_betting_notice,
               two_recommend_id,
             };
             addUsers(params).then((res) => {
@@ -1080,6 +1108,7 @@ export default {
               is_transaction,
               is_recharge,
               is_withdrawal,
+              is_betting_notice,
               id,
               one_recommend_id,
               two_recommend_id,
@@ -1094,6 +1123,7 @@ export default {
               is_transaction,
               is_recharge,
               is_withdrawal,
+              is_betting_notice,
               one_recommend_id,
               two_recommend_id,
               id: id,
@@ -1282,6 +1312,15 @@ export default {
       console.log(item);
       this.$router.push({
         path: "/user/details",
+        query: {
+          id: item.id,
+        },
+      });
+    },
+
+    teamDetails(item) {
+      this.$router.push({
+        path: "/user/team",
         query: {
           id: item.id,
         },
